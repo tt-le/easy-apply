@@ -8,4 +8,6 @@
 
 |Tien-Thanh Le| letient |1004956906 | tienthanh.le@mail.utoronto.ca | 5146194893 | TienTaLit#1840 |
 
+|Vanshika Virmani | virmani2 | 1006865251 | v.virmani@mail.utoronto.ca | 4168271802 | Vanshika#7721 |
+
 Discord Chat/Server Invite: https://discord.gg/YvTAsJKnph
