@@ -10,4 +10,6 @@
 
 |Vanshika Virmani | virmani2 | 1006865251 | v.virmani@mail.utoronto.ca | 4168271802 | Vanshika#7721 |
 
+|Ahmed Yasser Elkady | elkadya1 | 1005342988 | ahmed.elkady@mail.utoronto.ca | 4168549206 | nooneuknow3#2123 |
+
 Discord Chat/Server Invite: https://discord.gg/YvTAsJKnph
