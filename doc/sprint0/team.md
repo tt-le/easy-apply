@@ -4,7 +4,7 @@
 
 |Xiaohan Lu| luxiaoh1 |1005683404 | xiaohan.lu@mail.utoronto.ca |4373268409 |ShawLue#8354 |
 
-|Parth Solanki| solank30 |1005244415 | parth.solanki@mail.utoronto.ca |6475680091 |ShawLue#8354 |
+|Parth Solanki| solank30 |1005244415 | parth.solanki@mail.utoronto.ca |6475680091 | Parth#0337 |
 
 |Tien-Thanh Le| letient |1004956906 | tienthanh.le@mail.utoronto.ca | 5146194893 | TienTaLit#1840 |
 
