@@ -6,4 +6,6 @@
 
 |Parth Solanki| solank30 |1005244415 | parth.solanki@mail.utoronto.ca |6475680091 |ShawLue#8354 |
 
+|Tien-Thanh Le| letient |1004956906 | tienthanh.le@mail.utoronto.ca | 5146194893 | TienTaLit#1840 |
+
 Discord Chat/Server Invite: https://discord.gg/YvTAsJKnph
