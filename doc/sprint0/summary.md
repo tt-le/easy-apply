@@ -13,7 +13,7 @@ Name: Benna Kelso, Age: 22, University of Toronto Graduate looking for a job, pr
 Name: Mohammed Kami, Age: 48, experienced worker who is unemployed and looking for work in a senior management role
 
 
-Name: James Wilikers, Age 45, Experienced recruiter looking for workers in a mid-sized technology company 
+Name: Linda Michaels, Age 38, an experienced mid-sized company recruiter tired of reading through hundreds of resumes for every single job posting
 
 
 Part 3: The Key Scenarios
@@ -22,7 +22,7 @@ Part 3: The Key Scenarios
 Benna Kelso wishes to represent herself in the job search without only using a traditional resume as she believes it lacks a personal touch. 
 
 
-James Wilikers as an interviewer is sick of sifting through heaps of resume and would like something more easily digestible like a video format introduction from the applicants, which would also allow him to intake more information about the applicants. 
+Linda Michaels as an interviewer is sick of sifting through heaps of resume and would like something more easily digestible like a video format introduction from the applicants, which would also allow her to intake more information about the applicants. 
 
 
 Part 4: The Key Principles
