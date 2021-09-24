@@ -1,5 +1,7 @@
 # Motivation 
-Easy Apply is a job search tool that improves upon the current job seeking process by allowing users to create a video introduction of themselves to express creativity and uniqueness of each user. Thereby allowing employers to easily digest applicants’ info via video format without shifting through heaps of resumes.
+Easy Apply is a job search tool that improves upon the current job seeking process by allowing users 
+to create a video introduction of themselves to express creativity and uniqueness of each user. 
+Thereby allowing employers to easily digest applicants’ info via video format without shifting through heaps of resumes.
 
 
 # Getting Started
