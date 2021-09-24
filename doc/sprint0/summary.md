@@ -6,13 +6,13 @@ Build a website(Easy Apply) that improves upon the current job seeking process b
 
 Part 2: The Key Personas
 
-
+University Graduate
 Name: Benna Kelso, Age: 22, University of Toronto Graduate looking for a job, preferably software related
 
-
+Unemployed Veteran 
 Name: Mohammed Kami, Age: 48, experienced worker who is unemployed and looking for work in a senior management role
 
-
+Recruitment Manager
 Name: Linda Michaels, Age 38, an experienced mid-sized company recruiter tired of reading through hundreds of resumes for every single job posting
 
 
