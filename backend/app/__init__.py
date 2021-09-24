@@ -3,12 +3,14 @@ from flask import Flask, render_template
 
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
 
 # Define the WSGI application object
 app = Flask(__name__)
 
 # Configurations
-app.config.from_object('config')
+app.config.from_object('config.DevelopmentConfig')
 
 # Define the database object which is imported
 # by modules and controllers
