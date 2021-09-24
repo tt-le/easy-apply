@@ -19,7 +19,7 @@ Name: Linda Michaels, Age 38, an experienced mid-sized company recruiter tired o
 Part 3: The Key Scenarios
 
 
-Benna Kelso wishes to represent herself in the job search without only using a traditional resume as she believes it lacks a personal touch. 
+Benna Kelso wishes to represent herself in the job search without only using a traditional resume as she believes it lacks a personal touch, while also not needing to fill in information for job positions and instead can apply with one easy click. 
 
 
 Linda Michaels as an interviewer is sick of sifting through heaps of resume and would like something more easily digestible like a video format introduction from the applicants, which would also allow her to intake more information about the applicants. 
