@@ -1,6 +1,9 @@
+#TODO refactor into MVC
+
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
-                  flash, g, session, redirect, url_for
+                  flash, g, session, redirect, url_for, jsonify, \
+                  make_response
 
 # Import the database object from the main app module
 from app import db
@@ -12,7 +15,21 @@ from app.dummy_service.models import Dummy
 dummy_service = Blueprint('dummy', __name__, url_prefix='/dummy')
 
 # Set the route and accepted methods
-@dummy_service.route('/endpoint/', methods=['GET', 'POST'])
-def create():
-    Dummy.create
-    return render_template("auth/signin.html", form=form)
+@dummy_service.route('/create/<name>', methods=['GET','POST'])
+def create(name):
+    db.session.add(Dummy(name))
+    db.session.commit()
+    message = f"<div> Added a dummy named {name}! </div>"
+    print(message)
+    return make_response(message)
+
+@dummy_service.route('/get', methods=['GET'])
+def get():
+    table = db.session.execute("SELECT * FROM dummy")
+    message = "List of dummies"
+    res = {'table':[]}
+    for dummy in table:
+        message += f"<div> Dummy: {dummy.name}! </div>"
+        res['table'].append(dummy.name) 
+    print(message)
+    return make_response(jsonify(res))
