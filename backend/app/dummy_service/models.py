@@ -13,7 +13,7 @@ class Base(db.Model):
                                            onupdate=db.func.current_timestamp())
 class Dummy(Base):
     __tablename__ = 'dummy'
-    dummy_name = db.Column(db.String(128),  nullable=False)
+    name = db.Column(db.String(255),  nullable=False)
 
     # New instance instantiation procedure
     def __init__(self, name):

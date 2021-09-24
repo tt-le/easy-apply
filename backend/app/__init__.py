@@ -1,13 +1,13 @@
-# Import flask and template operators
-from flask import Flask, render_template
-
-# Import SQLAlchemy
+from flask import Flask
+from flask_cors import CORS
+# DB imports
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
 # Define the WSGI application object
 app = Flask(__name__)
+CORS(app)
 
 # Configurations
 app.config.from_object('config.DevelopmentConfig')
@@ -15,6 +15,7 @@ app.config.from_object('config.DevelopmentConfig')
 # Define the database object which is imported
 # by modules and controllers
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Sample HTTP error handling
 @app.errorhandler(404)
