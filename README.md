@@ -60,10 +60,16 @@ change the following variable appropriately:
 ```python
 SQLALCHEMY_DATABASE_URI = "postgresql://{user}:{password}@localhost:{PORT}/{tableName}"
 ```
+To use the configuration as is, simply run the postgresql server with default settings. 
 
-The table configured for the dummy API is the following:
+The table configured for the dummy API is the following, create it by using postgresql CLI tool. 
 
+```bash
+psql -U postgres
 ```
+
+Run the following to create the table.
+```bash
 CREATE TABLE dummyDB ( 
 name VARCHAR ( 255 ) UNIQUE NOT NULL, 
 id  serial PRIMARY KEY, 
