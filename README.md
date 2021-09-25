@@ -6,9 +6,28 @@ Easy Apply is a job search tool that improves upon the current job seeking proce
 ## Prerequisites
 - You will need [python](https://www.python.org/downloads/) for the building backend.
 - You will need npm and [node](https://nodejs.org/en/) for building the frontend.
-- To deploy a local database, you will need [postgresql](https://www.postgresql.org/download/).
+- To deploy a local database server, this application is configured with postgresql. 
+  You will need [postgresql](https://www.postgresql.org/download/).
 
-## Installation and deployment
+## Database 
+
+1. Start the postgresql server running on the default port:5432
+2. Use the postgresql CLI tool to create a table under the postgres user.
+
+```bash
+psql -U postgres
+```
+
+3. Run the following to create the table. This table is used for the dummy API.
+
+```bash
+CREATE TABLE dummyDB ( 
+name VARCHAR ( 255 ) UNIQUE NOT NULL, 
+id  serial PRIMARY KEY, 
+date_created TIMESTAMP NOT NULL, date_modified TIMESTAMP );
+```
+
+## Installation and deployment 
 
 1. Clone the repo.
 ```bash 
@@ -53,26 +72,13 @@ npm start
 ```
 
 ## Configuration
-Backend configuration is done in [config.py](https://github.com/UTSCCSCC01/projectf21-team-anything-works/blob/main/backend/config.py). To connect your database,  
-change the following variable appropriately: 
+Backend configuration is done in [config.py](https://github.com/UTSCCSCC01/projectf21-team-anything-works/blob/main/backend/config.py). 
+To connect your database, change the following variable appropriately: 
 ```python
-SQLALCHEMY_DATABASE_URI = "postgresql://{user}:{password}@localhost:{PORT}/{tableName}"
+SQLALCHEMY_DATABASE_URI = "postgresql://{user}:{password}@{HOSTNAME}:{PORT}/{tableName}"
 ```
-To use the configuration as is, simply run the postgresql server with default settings. 
+To use the configuration as is, simply run the postgresql server with default settings. (As stated in the database section)
 
-The table configured for the dummy API is the following, create it by using postgresql CLI tool. 
-
-```bash
-psql -U postgres
-```
-
-Run the following to create the table.
-```bash
-CREATE TABLE dummyDB ( 
-name VARCHAR ( 255 ) UNIQUE NOT NULL, 
-id  serial PRIMARY KEY, 
-date_created TIMESTAMP NOT NULL, date_modified TIMESTAMP );
-```
 
 # Contributing: 
 Please refer to each project's style and contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
