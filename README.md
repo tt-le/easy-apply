@@ -46,7 +46,7 @@ cd backend && python3 -m venv .
 3. Install python dependencies into the virtual environment using the provided list. 
 
 ```bash
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 4. Migrate the database
 
