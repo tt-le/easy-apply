@@ -11,7 +11,6 @@ itsdangerous==2.0.1
 Jinja2==3.0.1
 Mako==1.1.5
 MarkupSafe==2.0.1
-psycopg2==2.7.7
 six==1.16.0
 SQLAlchemy==1.4.25
 typing-extensions==3.10.0.2
