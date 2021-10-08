@@ -13,7 +13,31 @@ from app.job_service.models import Jobs
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
-
+# Set the route and accepted methods
+@job_service.route('/create/<jobID>/', methods=['GET','POST'])
+def create(jobID,jobName,employerID,companyName,email,industry,location,introduction):
+    db.session.add(Jobs(jobID))
+    db.session.add(Jobs(jobName))
+    db.session.add(Jobs(employerID))
+    db.session.add(Jobs(companyName))
+    db.session.add(Jobs(email))
+    db.session.add(Jobs(industry))
+    db.session.add(Jobs(location))
+    db.session.add(Jobs(introduction))
+    db.session.commit()
+    message = f"<div> Added a job named {jobName}! </div>"
+    print(message)
+    return make_response(message)
+ 
+@job_service.route('/get', methods=['GET'])
+def get():
+    table = db.session.execute("SELECT * FROM jobs")
+    message = "List of jobs"
+    res = {'table':[]}
+    for job in table:
+        message += f"<div> ID: {job.jobID} Job: {job.jobName}! </div>"
+        res['table'].append(job.Jobname) 
+        
 @job_service.route('/search', methods=['GET','POST'])
 def displayJob():
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
