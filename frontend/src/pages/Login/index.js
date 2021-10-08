@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { Button, Grid, Link, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, Link } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import logo from "./easy-apply_logo.jpg";
 import './index.css';
@@ -23,9 +23,10 @@ const Login = () => (
             <Form>
               <input type="text" name="u" placeholder="Email" required="required" />
               <input type="password" name="p" placeholder="Password" required="required" />
-            < button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+              <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
             </Form>
           </Formik>
+          <Link href="/signup" variant="body2" style={{paddingTop:"10px"}}>Don't have an Account?</Link>
         </div>
       </div>
     </body>

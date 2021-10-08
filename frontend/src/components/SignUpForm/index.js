@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { Button, MenuItem, Grid, Link } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
@@ -8,7 +9,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import * as yup from "yup";
 import FileUploader from "../FileUpload";
 
-const initialValues = {
+const initialValuesApplicant = {
   firstName: "",
   lastName: "",
   email: "",
@@ -21,7 +22,19 @@ const initialValues = {
   country: "",
 };
 
-const validationSchema = yup.object().shape({
+const initialValuesEmployer = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  organization: "",
+  address: "",
+  city: "",
+  country: "",
+};
+
+const validationSchemaApplicant = yup.object().shape({
   firstName: yup.string().required("Required"),
   lastName: yup.string().required("Required"),
   email: yup.string().email("Invalid email").required("Required"),
@@ -42,180 +55,354 @@ const validationSchema = yup.object().shape({
   profilePicture:  yup.mixed().optional()
 });
 
+const validationSchemaEmployer = yup.object().shape({
+  firstName: yup.string().required("Required"),
+  lastName: yup.string().required("Required"),
+  email: yup.string().email("Invalid email").required("Required"),
+  password: yup
+    .string()
+    .required("Required")
+    .min(8, "Password must be minimum 8 characters"),
+  confirmPassword: yup
+    .string()
+    .required("Required")
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+  organization: yup.string().required("Required"),
+  address: yup.string().required("Required"),
+  city: yup.string().required("Required"),
+  country: yup.string().required("Required"),
+});
+
 function SignUpForm() {
-  return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema}>
-      {({ submitForm, isSubmitting, touched, errors }) => (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Form>
-            <Grid
-              container
-              direction="column"
-              justify="space-evenly"
-              spacing={2}
-            >
-              <Grid item container spacing={2}>
-                <Grid item xs={6}>
+  const [user, setUser] = useState("Applicant");
+
+  if(user == "Applicant") {
+    return (
+      <Formik initialValues={initialValuesApplicant} validationSchema={validationSchemaApplicant}>
+        {({ submitForm, isSubmitting, touched, errors }) => (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Form>
+              <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                spacing={2}
+              >
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="firstName"
+                      type="text"
+                      label="First name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="lastName"
+                      type="text"
+                      label="Last name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      name="email"
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="confirmPassword"
+                      type="password"
+                      label="Re-enter password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={DatePicker}
+                      name="birthDate"
+                      label="Date of birth"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      size="small"
+                      fullWidth
+                      disableFuture
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      type="text"
+                      name="gender"
+                      label="Gender"
+                      select
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    >
+                      <MenuItem key="Male" value="Male">
+                        Male
+                      </MenuItem>
+                      <MenuItem key="Female" value="Female">
+                        Female
+                      </MenuItem>
+                      <MenuItem key="Other" value="Other">
+                        Other
+                      </MenuItem>
+                    </Field>
+                  </Grid>
+                </Grid>
+                <Grid item>
                   <Field
                     component={TextField}
-                    name="firstName"
+                    name="address"
                     type="text"
-                    label="First name"
+                    label="Address"
                     variant="outlined"
                     size="small"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    component={TextField}
-                    name="lastName"
-                    type="text"
-                    label="Last name"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="city"
+                      type="text"
+                      label="City"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="country"
+                      type="text"
+                      label="Country"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid item container spacing={2}>
-                <Grid item xs={12}>
-                  <Field
-                    component={TextField}
-                    name="email"
-                    type="email"
-                    label="Email"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <FileUploader text="Profile Picture" />
+                  </Grid>
+                  <Grid item xs={6}>
+                  <FileUploader text="Elevator Pitch" fullwidth/>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid item container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    component={TextField}
-                    name="password"
-                    type="password"
-                    label="Password"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    component={TextField}
-                    name="confirmPassword"
-                    type="password"
-                    label="Re-enter password"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-              <Grid item container spacing={2}>
-                <Grid item xs={6}>
-                  <Field
-                    component={DatePicker}
-                    name="birthDate"
-                    label="Date of birth"
-                    inputVariant="outlined"
-                    format="dd/MM/yyyy"
-                    size="small"
-                    fullWidth
-                    disableFuture
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    component={TextField}
-                    type="text"
-                    name="gender"
-                    label="Gender"
-                    select
-                    variant="outlined"
-                    size="small"
+                <Grid item container justify="center">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
                     fullWidth
                   >
-                    <MenuItem key="Male" value="Male">
-                      Male
-                    </MenuItem>
-                    <MenuItem key="Female" value="Female">
-                      Female
-                    </MenuItem>
-                    <MenuItem key="Other" value="Other">
-                      Other
-                    </MenuItem>
-                  </Field>
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link href="/login" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link onClick={() => setUser("Employer")} variant="body2" style={{cursor:"pointer"}}>
+                    Are you an Employer?
+                  </Link>
                 </Grid>
               </Grid>
-              <Grid item>
-                <Field
-                  component={TextField}
-                  name="address"
-                  type="text"
-                  label="Address"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item container spacing={2}>
-                <Grid item xs={6}>
+            </Form>
+          </MuiPickersUtilsProvider>
+        )}
+      </Formik>
+    );
+  } else if (user == "Employer") {
+    return (
+      <Formik initialValues={initialValuesEmployer} validationSchema={validationSchemaEmployer}>
+        {({ submitForm, isSubmitting, touched, errors }) => (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Form>
+              <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                spacing={2}
+              >
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="firstName"
+                      type="text"
+                      label="First name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="lastName"
+                      type="text"
+                      label="Last name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      name="email"
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="confirmPassword"
+                      type="password"
+                      label="Re-enter password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      type="text"
+                      name="organization"
+                      label="Organization"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item>
                   <Field
                     component={TextField}
-                    name="city"
+                    name="address"
                     type="text"
-                    label="City"
+                    label="Address"
                     variant="outlined"
                     size="small"
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    component={TextField}
-                    name="country"
-                    type="text"
-                    label="Country"
-                    variant="outlined"
-                    size="small"
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="city"
+                      type="text"
+                      label="City"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="country"
+                      type="text"
+                      label="Country"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container justify="center">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
                     fullWidth
-                  />
+                  >
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link href="/login" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link onClick={() => setUser("Applicant")} variant="body2" style={{cursor:"pointer"}}>
+                    Are you an Applicant?
+                  </Link>
                 </Grid>
               </Grid>
-              <Grid item container spacing={2}>
-                <Grid item xs={6}>
-                  <FileUploader text="Profile Picture" />
-                </Grid>
-                <Grid item xs={6}>
-                <FileUploader text="Elevator Pitch" fullwidth/>
-                </Grid>
-              </Grid>
-              <Grid item container justify="center">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                  onClick={submitForm}
-                  fullWidth
-                >
-                  Register
-                </Button>
-              </Grid>
-              <Grid item container justify="center">
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Form>
-        </MuiPickersUtilsProvider>
-      )}
-    </Formik>
-  );
+            </Form>
+          </MuiPickersUtilsProvider>
+        )}
+      </Formik>)
+  }
 }
 
 export default SignUpForm;
