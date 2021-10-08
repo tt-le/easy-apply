@@ -38,3 +38,29 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % (self.name)     
+
+class Employer(Base):
+
+    __tablename__ = 'auth_employer'
+
+    # company name
+    company_name    = db.Column(db.String(128), nullable=False)
+
+    #company login details
+    company_email   = db.Column(db.String(128), nullable=False,
+                                                     unique=True)
+    password    = db.Column(db.String(192), nullable=False)
+
+    #company authorization
+    role    = db.Column(db.SmallInteger, nullable=False)
+    status  = db.Column(db.SmallInteger, nullable=False)
+
+    #instance instantiation
+    def __init__(self, name, email, password):
+
+        self.company_name = name
+        self.company_email = email
+        self.password = password
+    
+    def __repr__(self):
+        return '<Company %r>' % (self.company_name)
