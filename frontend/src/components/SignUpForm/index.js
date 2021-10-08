@@ -6,6 +6,7 @@ import { DatePicker } from "formik-material-ui-pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import * as yup from "yup";
+import FileUploader from "../FileUpload";
 
 const initialValues = {
   firstName: "",
@@ -37,6 +38,8 @@ const validationSchema = yup.object().shape({
   address: yup.string().required("Required"),
   city: yup.string().required("Required"),
   country: yup.string().required("Required"),
+  elevatorPitch: yup.mixed().optional(),
+  profilePicture:  yup.mixed().optional()
 });
 
 function SignUpForm() {
@@ -181,6 +184,14 @@ function SignUpForm() {
                     size="small"
                     fullWidth
                   />
+                </Grid>
+              </Grid>
+              <Grid item container spacing={2}>
+                <Grid item xs={6}>
+                  <FileUploader text="Profile Picture" />
+                </Grid>
+                <Grid item xs={6}>
+                <FileUploader text="Elevator Pitch" fullwidth/>
                 </Grid>
               </Grid>
               <Grid item container justify="center">
