@@ -37,6 +37,8 @@ def get():
     for job in table:
         message += f"<div> ID: {job.jobID} Job: {job.jobName}! </div>"
         res['table'].append(job.Jobname) 
+    print(message)
+    return make_response(jsonify(res))
         
 @job_service.route('/search', methods=['GET','POST'])
 def displayJob():
