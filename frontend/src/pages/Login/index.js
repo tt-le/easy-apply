@@ -4,7 +4,6 @@ import { Button, Grid, Link, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import './index.css';
 
-import ReactDOM from 'react-dom';
 const Login = () => (
     <body>
     <div>
