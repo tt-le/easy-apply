@@ -1,7 +1,8 @@
-import React from "react";
+import {React} from "react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
-import { Button, MenuItem, Grid, Link } from "@material-ui/core";
+import { Button, MenuItem, Grid} from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import { DatePicker } from "formik-material-ui-pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -240,14 +241,14 @@ function SignUpForm() {
                   </Button>
                 </Grid>
                 <Grid item container justify="center">
-                  <Link href="/login" variant="body2">
+                  <Link className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" to="/login" style={{cursor:"pointer"}}>
                     Already have an account? Sign in
                   </Link>
                 </Grid>
                 <Grid item container justify="center">
-                  <Link onClick={() => setUser("Employer")} variant="body2" style={{cursor:"pointer"}}>
+                  <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" onClick={() => setUser("Employer")}  style={{cursor:"pointer"}}>
                     Are you an Employer?
-                  </Link>
+                  </a>
                 </Grid>
               </Grid>
             </Form>
@@ -388,14 +389,14 @@ function SignUpForm() {
                   </Button>
                 </Grid>
                 <Grid item container justify="center">
-                  <Link href="/login" variant="body2">
+                  <Link className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" to="/login" style={{cursor:"pointer"}}>
                     Already have an account? Sign in
                   </Link>
                 </Grid>
                 <Grid item container justify="center">
-                  <Link onClick={() => setUser("Applicant")} variant="body2" style={{cursor:"pointer"}}>
+                  <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" onClick={() => setUser("Applicant")}  style={{cursor:"pointer"}}>
                     Are you an Applicant?
-                  </Link>
+                  </a>
                 </Grid>
               </Grid>
             </Form>
