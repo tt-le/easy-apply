@@ -40,12 +40,11 @@ def get():
     print(message)
     return make_response(jsonify(res))
         
-@job_service.route('/search', methods=['GET','POST'])
+@job_service.route('/search/<userInput>', methods=['GET','POST'])
 def displayJob():
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
     # first iterate through loop to find score, then make list to have score stored, index represents jobID, then if list index has 1
     # get info from database and send that to the frontend
-    userInput = "software"
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
