@@ -4,7 +4,6 @@ to create a video introduction of themselves to express creativity and uniquenes
 Thereby allowing employers to easily digest applicants’ info via video format without shifting through heaps of resumes.
 
 
-
 # Getting Started
 ## Prerequisites
 - You will need [python](https://www.python.org/downloads/) for the building backend.
