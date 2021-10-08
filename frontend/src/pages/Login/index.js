@@ -2,12 +2,13 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Button, Grid, Link, Typography } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
+import logo from "./easy-apply_logo.jpg";
 import './index.css';
 
 const Login = () => (
     <body>
-    <div>
-      <h1>Login</h1>
+    <div class="login">
+      <h1><img src={logo} alt="logo" style={ {"width":"100%"} }/></h1>
       <Formik
         initialValues={{
           Email: '',
@@ -19,13 +20,9 @@ const Login = () => (
         }}
       >
         <Form>
-          <label htmlFor="Email">Email</label>
-          <Field id="Email" name="Email" placeholder="Bob@gmail.com" />
-          
-          <label htmlFor="Password">Password</label>
-          <Field id="Password" name="Password" placeholder="yourpassword" />
-  
-          <button type="Login">Login</button>
+          <input type="text" name="u" placeholder="Email" required="required" />
+          <input type="password" name="p" placeholder="Password" required="required" />
+        < button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
         </Form>
       </Formik>
     </div>
