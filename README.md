@@ -23,7 +23,7 @@ psql -U postgres
 3. Run the following to create the table. This table is used for the dummy API.
 
 ```bash
-CREATE TABLE dummyDB ( 
+CREATE DATABASE dummyDB ( 
 name VARCHAR ( 255 ) UNIQUE NOT NULL, 
 id  serial PRIMARY KEY, 
 date_created TIMESTAMP NOT NULL, date_modified TIMESTAMP );
@@ -43,31 +43,37 @@ cd easy-apply
 cd backend && python3 -m venv .
 ```
 
-3. Install python dependencies into the virtual environment using the provided list. 
+3. Start the virtual environment. Note, depending on your setup the location of the activate file may differ.
+
+```bash
+source ./bin/activate
+```
+
+4. Install python dependencies into the virtual environment using the provided list. 
 
 ```bash
 pip install -r requirements.txt
 ```
-4. Migrate the database
+5. Migrate the database
 
 ```bash
 flask db init
 flask db migrate -m "Initial migration."
 ```
 
-5. Deploy the flask backend locally
+6. Deploy the flask backend locally
 
 ```bash
 python3 run.py
 ```
 
-6. Go to the frontend directory and install all node dependencies
+7. Go to the frontend directory and install all node dependencies
 
 ```bash
 cd ../frontend && npm i 
 ```
 
-7. Deploy the React Frontend locally
+8. Deploy the React Frontend locally
 
 ```bash
 npm start
