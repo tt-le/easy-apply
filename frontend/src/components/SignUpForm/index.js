@@ -1,0 +1,409 @@
+import {React} from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Formik, Form, Field } from "formik";
+import { Button, MenuItem, Grid} from "@material-ui/core";
+import { TextField } from "formik-material-ui";
+import { DatePicker } from "formik-material-ui-pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import * as yup from "yup";
+import FileUploader from "../FileUpload";
+
+const initialValuesApplicant = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  birthDate: null,
+  gender: "",
+  address: "",
+  city: "",
+  country: "",
+};
+
+const initialValuesEmployer = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  organization: "",
+  address: "",
+  city: "",
+  country: "",
+};
+
+const validationSchemaApplicant = yup.object().shape({
+  firstName: yup.string().required("Required"),
+  lastName: yup.string().required("Required"),
+  email: yup.string().email("Invalid email").required("Required"),
+  password: yup
+    .string()
+    .required("Required")
+    .min(8, "Password must be minimum 8 characters"),
+  confirmPassword: yup
+    .string()
+    .required("Required")
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+  birthDate: yup.date().required("Required").nullable(),
+  gender: yup.string().required("Required"),
+  address: yup.string().required("Required"),
+  city: yup.string().required("Required"),
+  country: yup.string().required("Required"),
+  elevatorPitch: yup.mixed().optional(),
+  profilePicture:  yup.mixed().optional()
+});
+
+const validationSchemaEmployer = yup.object().shape({
+  firstName: yup.string().required("Required"),
+  lastName: yup.string().required("Required"),
+  email: yup.string().email("Invalid email").required("Required"),
+  password: yup
+    .string()
+    .required("Required")
+    .min(8, "Password must be minimum 8 characters"),
+  confirmPassword: yup
+    .string()
+    .required("Required")
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+  organization: yup.string().required("Required"),
+  address: yup.string().required("Required"),
+  city: yup.string().required("Required"),
+  country: yup.string().required("Required"),
+});
+
+function SignUpForm() {
+  const [user, setUser] = useState("Applicant");
+
+  if(user == "Applicant") {
+    return (
+      <Formik initialValues={initialValuesApplicant} validationSchema={validationSchemaApplicant}>
+        {({ submitForm, isSubmitting, touched, errors }) => (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Form>
+              <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                spacing={2}
+              >
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="firstName"
+                      type="text"
+                      label="First name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="lastName"
+                      type="text"
+                      label="Last name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      name="email"
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="confirmPassword"
+                      type="password"
+                      label="Re-enter password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={DatePicker}
+                      name="birthDate"
+                      label="Date of birth"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      size="small"
+                      fullWidth
+                      disableFuture
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      type="text"
+                      name="gender"
+                      label="Gender"
+                      select
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    >
+                      <MenuItem key="Male" value="Male">
+                        Male
+                      </MenuItem>
+                      <MenuItem key="Female" value="Female">
+                        Female
+                      </MenuItem>
+                      <MenuItem key="Other" value="Other">
+                        Other
+                      </MenuItem>
+                    </Field>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Field
+                    component={TextField}
+                    name="address"
+                    type="text"
+                    label="Address"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="city"
+                      type="text"
+                      label="City"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="country"
+                      type="text"
+                      label="Country"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <FileUploader text="Profile Picture" />
+                  </Grid>
+                  <Grid item xs={6}>
+                  <FileUploader text="Elevator Pitch" fullwidth/>
+                  </Grid>
+                </Grid>
+                <Grid item container justify="center">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                    fullWidth
+                  >
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" to="/login" style={{cursor:"pointer"}}>
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+                <Grid item container justify="center">
+                  <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" onClick={() => setUser("Employer")}  style={{cursor:"pointer"}}>
+                    Are you an Employer?
+                  </a>
+                </Grid>
+              </Grid>
+            </Form>
+          </MuiPickersUtilsProvider>
+        )}
+      </Formik>
+    );
+  } else if (user == "Employer") {
+    return (
+      <Formik initialValues={initialValuesEmployer} validationSchema={validationSchemaEmployer}>
+        {({ submitForm, isSubmitting, touched, errors }) => (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Form>
+              <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                spacing={2}
+              >
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="firstName"
+                      type="text"
+                      label="First name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="lastName"
+                      type="text"
+                      label="Last name"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      name="email"
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name="confirmPassword"
+                      type="password"
+                      label="Re-enter password"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      type="text"
+                      name="organization"
+                      label="Organization"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Field
+                    component={TextField}
+                    name="address"
+                    type="text"
+                    label="Address"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item container spacing={2}>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="city"
+                      type="text"
+                      label="City"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Field
+                      component={TextField}
+                      name="country"
+                      type="text"
+                      label="Country"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container justify="center">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                    fullWidth
+                  >
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item container justify="center">
+                  <Link className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" to="/login" style={{cursor:"pointer"}}>
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+                <Grid item container justify="center">
+                  <a className="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-body2 MuiTypography-colorPrimary" onClick={() => setUser("Applicant")}  style={{cursor:"pointer"}}>
+                    Are you an Applicant?
+                  </a>
+                </Grid>
+              </Grid>
+            </Form>
+          </MuiPickersUtilsProvider>
+        )}
+      </Formik>)
+  }
+}
+
+export default SignUpForm;
