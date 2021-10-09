@@ -2,6 +2,8 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@mui/material/Button'
 import './landing.css'
+import "../../components/Footer/index.js"
+import "../../components/Header/index.js"
 
 function signup() {
     const landingPage = (
