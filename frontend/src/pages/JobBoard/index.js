@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import api from '../../api';
-import "./JobBoard.css"
-import data from "./mock_data.json"
+import "./JobBoard.css";
+import data from "./mock_data.json";
+import SearchBar from '../../Components/SearchBar';
+import "../../Components/SearchBar/SearchBar.css";
 
 function JobBoard () {
     const [boardinfo, setBoardinfo] = useState(data);
     return (
         <div className="app-container">
+            <SearchBar placeholder="Enter the Job Description..."/>
             <table>
                 <thead>
                     <tr>
