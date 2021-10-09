@@ -14,7 +14,7 @@ from app.job_service.models import Jobs
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 # Set the route and accepted methods
-@job_service.route('/create/<jobID>/', methods=['GET','POST'])
+@job_service.route('/create/<jobID>/<jobName>/<employerID>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['GET','POST'])
 def create(jobID,jobName,employerID,companyName,email,industry,location,introduction):
     db.session.add(Jobs(jobID))
     db.session.add(Jobs(jobName))
@@ -40,12 +40,11 @@ def get():
     print(message)
     return make_response(jsonify(res))
         
-@job_service.route('/search', methods=['GET','POST'])
+@job_service.route('/search/<userInput>', methods=['GET','POST'])
 def displayJob():
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
     # first iterate through loop to find score, then make list to have score stored, index represents jobID, then if list index has 1
     # get info from database and send that to the frontend
-    userInput = "software"
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
