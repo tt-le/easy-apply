@@ -1,6 +1,7 @@
 #TODO refactor into MVC
 
 # Import flask dependencies
+from operator import methodcaller
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
@@ -16,6 +17,15 @@ job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 # Set the route and accepted methods
 @job_service.route('/create/<jobID>/', methods=['GET','POST'])
 def create(jobID,jobName,employerID,companyName,email,industry,location,introduction):
+    #request_method = request.method
+    #jobID = request.form["jobID"]
+    #jobName = request.form["jobName"]
+    #employerID = request.form["employerId"]
+    #companyName = request.form["companyName"]
+    #email = request.form["email"]
+    #industry = request.form["industry"]
+    #location = request.form["location"]
+    #introduction = request.form["introduction"]
     db.session.add(Jobs(jobID))
     db.session.add(Jobs(jobName))
     db.session.add(Jobs(employerID))
@@ -40,12 +50,11 @@ def get():
     print(message)
     return make_response(jsonify(res))
         
-@job_service.route('/search', methods=['GET','POST'])
-def displayJob():
+@job_service.route('/search/<userInput>', methods=['GET','POST'])
+def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
     # first iterate through loop to find score, then make list to have score stored, index represents jobID, then if list index has 1
     # get info from database and send that to the frontend
-    userInput = "software"
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
