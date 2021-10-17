@@ -1,24 +1,22 @@
 import { useState } from 'react';
 import api from '../../api';
-import "./JobBoard.css"
-import data from "./mock_data.json"
+import "./JobBoard.css";
+import data from "./mock_data.json";
+import SearchBar from '../../Components/SearchBar';
+import "../../Components/SearchBar/SearchBar.css";
 
 function JobBoard () {
     const [boardinfo, setBoardinfo] = useState(data);
     return (
         <div className="app-container">
-            <h1 class="font-weight-bold"> 
-                Job Board
-            </h1>
+            <SearchBar placeholder="Enter the Job Description..."/>
             <table>
                 <thead>
                     <tr>
                         <th>Company</th>
-                        <th>Job Name</th>
-                        <th>Job ID</th>
-                        <th>Location</th>
+                        <th>Position Name</th>
                         <th>Job Description</th>
-                        
+                        <th>Date Posted</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,10 +24,8 @@ function JobBoard () {
                         <tr>
                         <td>{info.Company}</td>
                         <td>{info.PositionName}</td>
-                        <td>{info.JobID}</td>
-                        <td>{info.Location}</td>
                         <td>{info.Jobdescription}</td>
-                        
+                        <td>{info.DatePosted}</td>
                     </tr>
                     ))}
                     
