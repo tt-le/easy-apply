@@ -50,7 +50,7 @@ def get():
     print(message)
     return make_response(jsonify(res))
         
-@job_service.route('/search/<userInput>', methods=['GET','POST'])
+@job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
     # first iterate through loop to find score, then make list to have score stored, index represents jobID, then if list index has 1
