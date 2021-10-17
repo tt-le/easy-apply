@@ -15,7 +15,7 @@ from app.job_service.models import Jobs
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 # Set the route and accepted methods
-@job_service.route('/create/<jobID>/', methods=['GET','POST'])
+@job_service.route('/create/<jobID>/<jobName>/<employerId>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['PUT'])
 def create(jobID,jobName,employerID,companyName,email,industry,location,introduction):
     #request_method = request.method
     #jobID = request.form["jobID"]
