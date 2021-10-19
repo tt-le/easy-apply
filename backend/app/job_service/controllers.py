@@ -15,8 +15,8 @@ from app.job_service.models import Jobs
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 # Set the route and accepted methods
-@job_service.route('/create/<jobID>/<jobName>/<employerId>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['PUT'])
-def create(jobID,jobName,employerID,companyName,email,industry,location,introduction):
+@job_service.route('/create/<jobName>/<employerID>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['PUT'])
+def create(jobName,employerID,companyName,email,industry,location,introduction):
     #request_method = request.method
     #jobID = request.form["jobID"]
     #jobName = request.form["jobName"]
@@ -26,14 +26,7 @@ def create(jobID,jobName,employerID,companyName,email,industry,location,introduc
     #industry = request.form["industry"]
     #location = request.form["location"]
     #introduction = request.form["introduction"]
-    db.session.add(Jobs(jobID))
-    db.session.add(Jobs(jobName))
-    db.session.add(Jobs(employerID))
-    db.session.add(Jobs(companyName))
-    db.session.add(Jobs(email))
-    db.session.add(Jobs(industry))
-    db.session.add(Jobs(location))
-    db.session.add(Jobs(introduction))
+    db.session.add(Jobs(jobName,employerID,companyName,email,industry,location,introduction))
     db.session.commit()
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)
@@ -58,9 +51,18 @@ def displayJob(userInput):
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
-        exist = False
-        if jobs.jobName.contains(userInput) or jobs.companyName.contains(userInput) or jobs.industry.contains(userInput):
-            exist = True
-        if exist:
-            job_list.append(jobs.jobName)
+        if (userInput in jobs.jobName) or (userInput in jobs.companyName) or (userInput in jobs.industry):
+            #job_list["jobs"].append(jobs)
+            job_dict = {
+                "jobName": jobs.jobName,
+                "employerID": jobs.employerID,
+                "companyName": jobs.companyName,
+                "email": jobs.email,
+                "industry": jobs.industry,
+                "location": jobs.location,
+                "introduction": jobs.introduction
+            }
+            print(job_dict)
+            job_list["jobs"].append(job_dict)
+    print(job_list)    
     return make_response(jsonify(job_list))
