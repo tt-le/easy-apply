@@ -9,24 +9,35 @@ function SearchBar({placeholder, data}){
     const [wordEntered, setWordEntered] = useState(""); 
 
     const handleFilter = async(event) => {
-        const searchWord = event.target.value
+        const searchWord = event.target.value 
         setWordEntered(searchWord);
+        
         const dict = await api.get("/jobs/search/"+searchWord);
-        const data = dict['jobs']; 
+        const myData = dict['data']['jobs']; 
+
+        const newFilter = myData.filter((value) => {
+            return value.jobName.toLowerCase().includes(searchWord.toLowerCase()); 
+        });
+
+        if (searchWord === "") {
+            setFilteredData([]); 
+        }
+        else {
+            setFilteredData(newFilter); 
+        }
+
         // for (var i = 0; i<data.length; i++) {
         //     return data[i].title.toLowerCase().includes(searchWord.toLowerCase()); 
         // }; 
 
-        const newFilter = data.filter((value) => {
-            return value.title.toLowerCase().includes(searchWord.toLowerCase()); 
-        }); 
-
-        setFilteredData(newFilter); 
+        console.log(dict);
+        
+        console.log(myData); 
     }; 
 
     const clearInput = () => {
-        setFilteredData = ([]); 
-        setWordEntered = (""); 
+        setFilteredData([]); 
+        setWordEntered(""); 
     }
 
     return (
@@ -43,8 +54,14 @@ function SearchBar({placeholder, data}){
             
             {filteredData.length != 0 && (
             <div className="dataResult">
+                {filteredData.slice(0, 15).map((value, key) => {
+                    return <a className="dataItem"> 
+                    <p> {value.jobName} </p>
+                    </a>
+                })}
                 </div> 
             )}
+
             </div>
     )
 
