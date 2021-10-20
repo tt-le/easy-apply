@@ -16,7 +16,7 @@ function SearchBar({placeholder, data}){
         const myData = dict['data']['jobs']; 
 
         const newFilter = myData.filter((value) => {
-            return value.jobName.toLowerCase().includes(searchWord.toLowerCase()); 
+            return value.jobName.toLowerCase().includes(searchWord.toLowerCase()) || value.companyName.toLowerCase().includes(searchWord.toLowerCase()); 
         });
 
         if (searchWord === "") {
@@ -56,7 +56,7 @@ function SearchBar({placeholder, data}){
             <div className="dataResult">
                 {filteredData.slice(0, 15).map((value, key) => {
                     return <a className="dataItem"> 
-                    <p> {value.jobName} </p>
+                    <p> {value.jobName} at {value.companyName} </p>
                     </a>
                 })}
                 </div> 
