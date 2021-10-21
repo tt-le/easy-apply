@@ -5,6 +5,9 @@ import axios from 'axios';
 //   url = `http://localhost:8080/dummy/`;
 // }
 
-export default axios.create({
+var req = axios.create({
     baseURL: "http://localhost:8080/",
 });
+
+
+export default req
