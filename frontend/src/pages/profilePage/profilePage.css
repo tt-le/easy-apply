@@ -1,0 +1,13 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileHeader {
+    display: flex;
+    flex-direction: row;
+}
+
+.Button {
+    color: '3CC139'
+}
