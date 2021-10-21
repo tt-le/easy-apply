@@ -49,7 +49,7 @@ class User(Base):
         self.status = status
 
     def __repr__(self):
-        return '<User %r>' % (self.name)     
+        return '<User {} {} {} {} >'.format(self.firstName,self.lastName, self.email,self.address)
 
 # class Applicant():
     

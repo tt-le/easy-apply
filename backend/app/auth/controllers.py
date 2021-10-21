@@ -13,6 +13,20 @@ from app.auth.models import User#, Applicant, Employer
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
 
+
+# Test method
+@auth_service.route('/get', methods=['GET'])
+def get():
+    
+    users = User.query.all()
+    res = {'users':[]}
+    for user in users:
+        print(user)
+        res['users'].append(str(user))
+
+    return make_response(jsonify(res))
+
+
 @auth_service.route('/signup', methods=['POST'])
 def signup():
     secondary_role = None
@@ -20,7 +34,7 @@ def signup():
     firstName = req.get("firstName")
     lastName = req.get("lastName")
     email = req.get("email")
-    pw = bcrypt.generate_password_hash(req.get("password"))
+    pw = bcrypt.generate_password_hash(req.get("password")).decode('utf8')
     role = req.get("role")
     address = req.get("address")
     city = req.get("city")
@@ -58,6 +72,6 @@ def login():
     pw = req.get("password")
     query = User.query.filter_by(email=email).first()
     if query and bcrypt.check_password_hash(query.password, pw):
-        return make_response("Successfully logged in", status_code=201)
+        return make_response("Successfully logged in", 201)
     else:
-        return make_response("Incorrect password/email combination", status_code=418)
+        return make_response("Incorrect password/email combination", 418)
