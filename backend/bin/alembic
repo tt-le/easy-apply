@@ -1,0 +1,12 @@
+#!/bin/sh
+'''exec' "/Users/parth/Desktop/Year 3 Sem 2/C01/projectf21-team-anything-works/backend/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from alembic.config import main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())

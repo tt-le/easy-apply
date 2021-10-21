@@ -14,7 +14,6 @@ class Base(db.Model):
     
 class Jobs(Base):
     __tablename__ = 'jobs'
-    jobID = db.column(db.Integer, primary_key=True)
     jobName = db.Column(db.String(255),  nullable=False)
     employerID = db.Column(db.Integer,nullable=False)
     companyName = db.Column(db.String(255),nullable=False)
@@ -24,8 +23,7 @@ class Jobs(Base):
     introduction = db.Column(db.String(255),  nullable=False)
     
     # New instance instantiation procedure
-    def __init__(self,jobID,jobName,employerID,companyName,email,industry,location,introduction):
-        self.jobID          = jobID
+    def __init__(self,jobName,employerID,companyName,email,industry,location,introduction):
         self.jobName        = jobName
         self.employerID     = employerID
         self.companyName    = companyName
