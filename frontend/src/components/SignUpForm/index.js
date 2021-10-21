@@ -9,6 +9,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import * as yup from "yup";
 import FileUploader from "../FileUpload";
+import req from "../../api/index"
 
 const initialValuesApplicant = {
   firstName: "",
@@ -74,16 +75,27 @@ const validationSchemaEmployer = yup.object().shape({
   country: yup.string().required("Required"),
 });
 
-function logIn() {
-  
+function register(user, registerObject) {
+  console.log(registerObject);
+  registerObject["role"] = user;
+  req.post("auth/signup", registerObject).then((resp) => {
+    if(resp.status == 201) {
+      alert("Successful Rehgistration");
+    }
+  }).catch(error => {
+    if(error.response.status == 418) {
+      alert("User already exists!");
+    }
+  })
 }
 
-function SignUpForm() {
+function SignUpForm(props) {
   const [user, setUser] = useState("Applicant");
 
   if(user == "Applicant") {
     return (
-      <Formik initialValues={initialValuesApplicant} validationSchema={validationSchemaApplicant}>
+      <Formik initialValues={initialValuesApplicant} validationSchema={validationSchemaApplicant}
+      onSubmit={( nextValues ) => { register(user, nextValues) }}>
         {({ submitForm, isSubmitting, touched, errors }) => (
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Form>

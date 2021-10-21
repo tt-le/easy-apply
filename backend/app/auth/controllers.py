@@ -30,7 +30,7 @@ def get():
 @auth_service.route('/signup', methods=['POST'])
 def signup():
     secondary_role = None
-    req = request.form
+    req = request.json
     firstName = req.get("firstName")
     lastName = req.get("lastName")
     email = req.get("email")
@@ -67,7 +67,7 @@ def signup():
 
 @auth_service.route('/login', methods=['POST'])
 def login():
-    req = request.form
+    req = request.json
     email = req.get("email")
     pw = req.get("password")
     query = User.query.filter_by(email=email).first()
