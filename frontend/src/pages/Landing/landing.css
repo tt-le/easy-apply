@@ -1,36 +1,36 @@
-.root {
+#root {
     display: flex;
     flex-direction: column;   
 }
 
-.topBanner {
+#topBanner {
     display: flex;
     flex-direction: row;
     background-color: '2B2B2B';
 }
 
-.h3 {
+h3 {
     text-align : center;
     color: '3CC139';
 }
 
-.middleBanner {
+#middleBanner {
     display: flex;
     flex-direction: row;
 }
 
-.h4 {
+h4 {
     text-align: center;
 }
 
-.p {
+p {
     text-align: center;
 }
 
-.Button {
+Button {
     color: '3CC139'
 }
 
-.bottomBanner {
+#bottomBanner {
     display: flex;
 }
