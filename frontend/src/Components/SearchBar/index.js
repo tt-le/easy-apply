@@ -32,7 +32,7 @@ function SearchBar({placeholder, data}){
 
         console.log(dict);
         
-        console.log(myData); 
+        console.log(filteredData); 
     }; 
 
     const clearInput = () => {
@@ -41,28 +41,55 @@ function SearchBar({placeholder, data}){
     }
 
     return (
-        <div className="search">
-            <div className="searchInputs">
-                <input type="text" placeholder={placeholder}  value={wordEntered} onChange={handleFilter} />
-                <div className="searchIcon">
-                    {filteredData.length === 0 ? (
-                    <SearchIcon /> 
-                    ) : (
-                    <ClearIcon id="clearBtn" onClick={clearInput}/>) }
+        <div className="app-container">
+            <div className="search">
+                <div className="searchInputs">
+                    <input type="text" placeholder={placeholder}  value={wordEntered} onChange={handleFilter} />
+                    <div className="searchIcon">
+                        {filteredData.length === 0 ? (
+                        <SearchIcon /> 
+                        ) : (
+                        <ClearIcon id="clearBtn" onClick={clearInput}/>) }
+                    </div>
                 </div>
-            </div>
-            
-            {filteredData.length != 0 && (
-            <div className="dataResult">
-                {filteredData.slice(0, 15).map((value, key) => {
-                    return <a className="dataItem"> 
-                    <p> {value.jobName} at {value.companyName} </p>
-                    </a>
-                })}
-                </div> 
-            )}
+                
+                {filteredData.length != 0 && (
+                <div className="dataResult">
+                    {filteredData.slice(0, 15).map((value, key) => {
+                        return <a className="dataItem"> 
+                        <p> {value.jobName} at {value.companyName} </p>
+                        </a>
+                    })}
+                    </div> 
+                )}
 
-            </div>
+                </div>
+                
+                <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Position Name</th>
+                        <th>Job Description</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredData.map((info) => (
+                        <tr>
+                        <td>{info.companyName}</td>
+                        <td>{info.jobName}</td>
+                        <td>{info.introduction}</td>
+                        <td>{info.location}</td>
+                    </tr>
+                    ))}
+                    
+                </tbody>
+            </table>
+
+
+
+        </div>
     )
 
 }

@@ -5,12 +5,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import Dummy from './pages/Dummy'
 import JobBoard from './pages/JobBoard'
+import SearchBar from './Components/SearchBar'
 
 function App() {
   return (
     <Switch>
         <Route path="/" exact component={Dummy} />
-        <Route path="/JobBoard" exact component={JobBoard} />
+        <Route path="/JobBoard" exact component={SearchBar} />
     </Switch>
   );
 }
