@@ -4,8 +4,25 @@ import { Button, Grid, Typography, Link } from "@material-ui/core";
 import { TextField } from "formik-material-ui";
 import logo from "./easy-apply_logo.jpg";
 import './index.css';
+import req from "../../api/index";
 
-const Login = () => (
+function sendLogin(props) {
+  var email = document.getElementById("u").value;
+  var password = document.getElementById("p").value;
+  console.log("here");
+  
+  req.post("auth/login", {email: email, password: password}).then((resp) => {
+    if(resp.status == 201) {
+      alert("Successful Login")
+    }
+  }).catch(error => {
+    if(error.response.status == 418) {
+      alert("Incorrect Username or Password, try again!")
+    }
+  })
+}
+
+const Login = (props) => (
     <body>
       <div class="body">
         <div class="login">
@@ -15,15 +32,11 @@ const Login = () => (
               Email: '',
               Password: '',
             }}
-            onSubmit={async (values) => {
-              await new Promise((r) => setTimeout(r, 500));
-              alert(JSON.stringify(values, null, 2));
-            }}
           >
             <Form>
-              <input type="text" name="u" placeholder="Email" required="required" />
-              <input type="password" name="p" placeholder="Password" required="required" />
-              <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+              <input type="text" id="u" placeholder="Email" required="required" />
+              <input type="password" id="p" placeholder="Password" required="required" />
+              <button type="submit" class="btn btn-primary btn-block btn-large" onClick={() => sendLogin(props)}>Let me in.</button>
             </Form>
           </Formik>
           <Link href="/signup" variant="body2" style={{paddingTop:"10px"}}>Don't have an Account?</Link>

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_cors import CORS
 # DB imports
 from flask_sqlalchemy import SQLAlchemy
@@ -24,6 +24,12 @@ bcrypt = Bcrypt(app)
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
+@app.after_request
+def apply_CORS(response):
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+    response.headers["Access-Control-Allow-Headers"] =  "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+    return response
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.dummy_service.controllers import dummy_service 

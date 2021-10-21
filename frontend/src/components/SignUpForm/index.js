@@ -74,6 +74,10 @@ const validationSchemaEmployer = yup.object().shape({
   country: yup.string().required("Required"),
 });
 
+function logIn() {
+  
+}
+
 function SignUpForm() {
   const [user, setUser] = useState("Applicant");
 
