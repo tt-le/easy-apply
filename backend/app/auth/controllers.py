@@ -8,7 +8,8 @@ from flask import Blueprint, request, render_template, \
 from app import db, bcrypt
 
 # Import module models 
-from app.auth.models import User#, Applicant, Employer
+from app.auth.models import Role, Applicant, Employer, Authentication
+
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
@@ -18,7 +19,7 @@ auth_service = Blueprint('auth', __name__, url_prefix='/auth')
 @auth_service.route('/get', methods=['GET'])
 def get():
     
-    users = User.query.all()
+    users = Applicant.query.all()
     res = {'users':[]}
     for user in users:
         print(user)
@@ -29,7 +30,6 @@ def get():
 
 @auth_service.route('/signup', methods=['POST'])
 def signup():
-    secondary_role = None
     req = request.json
     firstName = req.get("firstName")
     lastName = req.get("lastName")
@@ -39,26 +39,33 @@ def signup():
     address = req.get("address")
     city = req.get("city")
     country = req.get("country")
-    user = User(firstName=firstName, lastName=lastName,
-     email=email, password=pw, address=address, city=city, 
-     country=country, role=role, status=1)
-    # if True or role == "applicant":
-    #     birthDate = req.get("birthDate")
-    #     gender = req.get("gender")
-    #     secondary_role = Applicant(email, birthDate, gender, user)
-    # else:
-    #     org = req.get("organization")
-    #     secondary_role = Employer(email, org, user)
-    
-    query = User.query.filter_by(email=email).first()
+
+    query = Authentication.query.filter_by(email=email).first()
     if query is None:
-        # user = User(firstName=firstName, lastName=lastName,
-        # email=email, password=pw, address=address, city="city", 
-        # country=country, role=role, status=1)
-        db.session.add(user)
-        # db.session.add(secondary_role)
+        
+        if role == "applicant":
+            birthDate = req.get("birthDate")
+            gender = req.get("gender")
+            role = Role(role="applicant", status=1)
+            db.session.add(role)
+            db.session.flush()
+            applicant = Applicant(user_id=role.user_id, firstName=firstName, lastName=lastName,
+                address=address, city=city, country=country, gender=gender, birthDate=birthDate)
+            db.session.add(applicant)
+        else:
+            org = req.get("organization")
+            role = Role(role="employer", status=1)
+            db.session.add(role)
+            db.session.flush()
+            employer = Employer(user_id=role.user_id, firstName=firstName, lastName=lastName,
+                address=address, city=city, country=country, organization=org)
+            db.session.add(employer)
+            
+        auth = Authentication(user_id=role.user_id, email=email, password=pw)
+        db.session.add(auth)
         db.session.commit()
-        message = f"Successfully create a new user"
+        message = f"Successfully create a new user" + str(role)
+
         print(message)
         return make_response(message,201)
     else:

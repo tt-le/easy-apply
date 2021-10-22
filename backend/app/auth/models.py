@@ -5,75 +5,92 @@ from app import db
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
-
     __abstract__  = True
-
-    id            = db.Column(db.Integer, primary_key=True)
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
 
 # Define a User model
-class User(Base):
-
-    __tablename__ = 'User'
-
-    firstName = db.Column(db.String(128),  nullable=False)
-    lastName  = db.Column(db.String(128),  nullable=False)
-
-    # Identification Data: email & password
-    email    = db.Column(db.String(128),  nullable=False,
-                                            unique=True)
-    password = db.Column(db.String(192),  nullable=False)
-    address = db.Column(db.String(128),  nullable=False)
-    city= db.Column(db.String(128), nullable=False)
-    country= db.Column(db.String(128), nullable=False)
-    # Authorisation Data: role & status
+class Role(Base):
+    __tablename__ = 'role'
+    user_id  = db.Column(db.Integer, primary_key=True)
     role     = db.Column(db.String(128), nullable=False)
     status   = db.Column(db.SmallInteger, nullable=False)
-    # applicant = db.relationship('Applicant', backref=db.backref("User"))
 
-
-
-    # New instance instantiation procedure
-    def __init__(self, firstName, lastName, email, password, address, city, country, role, status):
-
-        self.firstName     = firstName
-        self.lastName     = lastName
-        self.email    = email
-        self.password = password
-        self.address = address
-        self.city = city
-        self.country = country
+    def __init__(self, role, status):
         self.role = role
         self.status = status
 
     def __repr__(self):
-        return '<User %r>' % (self.name)     
+        return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role, self.status)     
 
-class Employer(Base):
+class Authentication(Base):
+    __tablename__ = 'auth'
+    role = db.relationship(Role)
+    user_id    = db.Column(db.Integer,  db.ForeignKey('role.user_id'), nullable=False,
+                                            unique=True, 
+                                            primary_key=True)
+    email = db.Column(db.String(128), unique=True)
+    password = db.Column(db.String(192),  nullable=False)
 
-    __tablename__ = 'auth_employer'
-
-    # company name
-    company_name    = db.Column(db.String(128), nullable=False)
-
-    #company login details
-    company_email   = db.Column(db.String(128), nullable=False,
-                                                     unique=True)
-    password    = db.Column(db.String(192), nullable=False)
-
-    #company authorization
-    role    = db.Column(db.SmallInteger, nullable=False)
-    status  = db.Column(db.SmallInteger, nullable=False)
-
-    #instance instantiation
-    def __init__(self, name, email, password):
-
-        self.company_name = name
-        self.company_email = email
+    def __init__(self, user_id, email, password):
+        self.user_id = user_id
+        self.email = email
         self.password = password
     
     def __repr__(self):
-        return '<Company %r>' % (self.company_name)
-        return '<User {} {} {} {} >'.format(self.firstName,self.lastName, self.email,self.address)
+        return '<Auth user:{}>'.format(self.user_id)     
+
+class Applicant(Base):
+    __tablename__ = 'applicant'
+    role = db.relationship(Role)
+    user_id = db.Column(db.Integer, db.ForeignKey('role.user_id'), primary_key=True)
+    firstName = db.Column(db.String(128),  nullable=False)
+    lastName = db.Column(db.String(128),  nullable=False)
+    # email = db.Column(db.String(128),  nullable=False, unique=True)
+    address = db.Column(db.String(128),  nullable=False)
+    city = db.Column(db.String(128), nullable=False)
+    country = db.Column(db.String(128), nullable=False)
+    gender = db.Column(db.String(128), nullable=False)
+    birthDate = db.Column(db.String(128), nullable=False)
+
+    def __init__(self, user_id, firstName, lastName, address, city, country, gender, birthDate):
+        self.user_id = user_id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.address = address
+        self.city = city
+        self.country = country
+        self.gender = gender
+        self.birthDate = birthDate
+    
+    def __repr__(self):
+        return '<Applicant {} {}>'.format(self.firstName, self.lastName)
+    
+
+
+class Employer(Base):
+    __tablename__ = 'employer'
+    role = db.relationship(Role)
+    user_id = db.Column(db.Integer, db.ForeignKey('role.user_id'),primary_key=True)
+    company_name = db.Column(db.String(128), nullable=False)
+    firstName = db.Column(db.String(128),  nullable=False)
+    lastName = db.Column(db.String(128),  nullable=False)
+    # email = db.Column(db.String(128),  nullable=False, unique=True)
+    address = db.Column(db.String(128),  nullable=False)
+    city = db.Column(db.String(128), nullable=False)
+    country = db.Column(db.String(128), nullable=False)
+
+    
+    def __init__(self, user_id, firstName, lastName, address, city, country, company_name):
+        self.user_id = user_id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.address = address
+        self.city = city
+        self.country = country
+        self.company_name = company_name
+    
+    def __repr__(self):
+        return '<Employer {} {} {}>'.format(self.company_name, self.firstName, self.lastName)
+    
