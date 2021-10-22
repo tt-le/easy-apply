@@ -55,9 +55,13 @@ class Employer(Base):
 
     __tablename__ = 'auth_employer'
 
-    # company name
+    # company information
     company_name    = db.Column(db.String(128), nullable=False)
-
+    manager_first_name = db.Column(db.String(128), nullable=False)
+    manager_last_name = db.Column(db.String(128), nullable=False)
+    address = db.Column(db.String(128), nullable = False)
+    city = db.Column(db.String(128), nullable=False)
+    country = db.Column(db.String(128), nullable=False)
     #company login details
     company_email   = db.Column(db.String(128), nullable=False,
                                                      unique=True)
@@ -68,11 +72,16 @@ class Employer(Base):
     status  = db.Column(db.SmallInteger, nullable=False)
 
     #instance instantiation
-    def __init__(self, name, email, password):
+    def __init__(self, first_name, last_name, email, password, company_name, address, city, country):
 
-        self.company_name = name
+        self.manager_first_name = first_name
+        self.manager_last_name = last_name
         self.company_email = email
         self.password = password
+        self.company_name = company_name
+        self.address = address
+        self.city = city
+        self.country = country
     
     def __repr__(self):
         return '<Company %r>' % (self.company_name)
