@@ -1,6 +1,7 @@
 # Import the database object (db) from the main application module
 # We will define this inside /app/__init__.py in the next sections.
 from app import db
+from flask_login import UserMixin
 
 
 # Define a base model for other database tables to inherit
@@ -24,22 +25,22 @@ class Role(Base):
     def __repr__(self):
         return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role, self.status)     
 
-class Authentication(Base):
+class Authentication(UserMixin, Base):
     __tablename__ = 'auth'
     role = db.relationship(Role)
-    user_id    = db.Column(db.Integer,  db.ForeignKey('role.user_id'), nullable=False,
+    id    = db.Column(db.Integer,  db.ForeignKey('role.user_id'), nullable=False,
                                             unique=True, 
                                             primary_key=True)
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(192),  nullable=False)
 
     def __init__(self, user_id, email, password):
-        self.user_id = user_id
+        self.id = user_id
         self.email = email
         self.password = password
     
     def __repr__(self):
-        return '<Auth user:{}>'.format(self.user_id)     
+        return '<Auth user:{}>'.format(self.id)     
 
 class Applicant(Base):
     __tablename__ = 'applicant'

@@ -4,8 +4,11 @@ from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
 
+from flask_login import login_user, logout_user, login_required, current_user
+
+
 # Import the database object from the main app module and bcrypt
-from app import db, bcrypt
+from app import db, bcrypt, login_manager
 
 # Import module models 
 from app.auth.models import Role, Applicant, Employer, Authentication
@@ -14,11 +17,15 @@ from app.auth.models import Role, Applicant, Employer, Authentication
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Authentication.query.filter_by(id=int(user_id)).first()
 
 # Test method
 @auth_service.route('/get', methods=['GET'])
+@login_required
 def get():
-    
+    print(current_user)
     users = Applicant.query.all()
     res = {'users':[]}
     for user in users:
@@ -77,8 +84,16 @@ def login():
     req = request.json
     email = req.get("email")
     pw = req.get("password")
-    query = User.query.filter_by(email=email).first()
-    if query and bcrypt.check_password_hash(query.password, pw):
+    user = Authentication.query.filter_by(email=email).first()
+    if user and bcrypt.check_password_hash(user.password, pw):
+        login_user(user, remember=True)
         return make_response("Successfully logged in", 201)
     else:
         return make_response("Incorrect password/email combination", 418)
+
+
+@auth_service.route('/logout')
+def logout():
+    logout_user()
+    return make_response("Successfully logged out", 201)
+    

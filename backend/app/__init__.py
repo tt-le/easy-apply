@@ -3,6 +3,7 @@ from flask_cors import CORS
 # DB imports
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 from flask_bcrypt import Bcrypt
 # Define the WSGI application object
@@ -11,6 +12,8 @@ CORS(app)
 
 # Configurations
 app.config.from_object('config.DevelopmentConfig')
+app.secret_key = '9b5d6d7fc07866d6f364dd509477ceb520322f7ceaa2587eb87df37a1a97c9a7'
+
 
 # Define the database object which is imported
 # by modules and controllers
@@ -19,6 +22,15 @@ migrate = Migrate(app, db)
 
 
 bcrypt = Bcrypt(app)
+
+
+
+# flask-login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+
 
 # Sample HTTP error handling
 @app.errorhandler(404)
