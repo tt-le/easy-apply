@@ -10,7 +10,7 @@ from flask import Blueprint, request, render_template, \
 from app import db
 
 # Import module models (i.e. Dummy)
-from app.job_service.models import Jobs
+from app.job_service.models import AppliedJob, Jobs
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
@@ -32,7 +32,26 @@ def create(jobName,employerID,companyName,email,industry,location,introduction):
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)
     return make_response(message)
- 
+
+@job_service.route('/applyjob/<jobID>', methods=['PUT'])
+@login_required
+def applyjob(jobID):
+    #request_method = request.method
+    #jobID = request.form["jobID"]
+    #jobName = request.form["jobName"]
+    #employerID = request.form["employerId"]
+    #companyName = request.form["companyName"]
+    #email = request.form["email"]
+    #industry = request.form["industry"]
+    #location = request.form["location"]
+    #introduction = request.form["introduction"]
+    print(current_user.get_id)
+    db.session.add(AppliedJob(jobID,current_user.get_id))
+    db.session.commit()
+    message = f"<div> Applyed to job with jobID:{jobID} and userID: {current_user.get_id} </div>"
+    print(message)
+    return make_response(message)
+
 @job_service.route('/get', methods=['GET'])
 def get():
     table = db.session.execute("SELECT * FROM jobs")

@@ -31,7 +31,19 @@ class Jobs(Base):
         self.industry       = industry 
         self.location       = location
         self.introduction   = introduction
- 
- 
+
     def __repr__(self):
         return '<Jobs %r>' % (self.name) 
+
+class AppliedJob(Base):
+    __tablename__ = 'jobs'
+    jobID = db.Column(db.Integer, db.ForeignKey('') ,nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey('role.user_id'), nullable = False)
+    
+    # New instance instantiation procedure
+    def __init__(self, jobID, userID):
+        self.userID = userID
+        self.jobID = jobID
+
+    def __repr__(self):
+        return '<JobID %r>' % (self.userjobID) 
