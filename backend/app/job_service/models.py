@@ -37,8 +37,9 @@ class Jobs(Base):
 
 class AppliedJob(Base):
     __tablename__ = 'jobs'
-    jobID = db.Column(db.Integer, db.ForeignKey('') ,nullable=False)
-    userId = db.Column(db.Integer, db.ForeignKey('role.user_id'), nullable = False)
+    job = db.relationship(Jobs)
+    jobID = db.Column(db.Integer, db.ForeignKey('job.id') ,nullable=False)
+    userID = db.Column(db.Integer, db.ForeignKey('role.user_id'), nullable = False)
     
     # New instance instantiation procedure
     def __init__(self, jobID, userID):

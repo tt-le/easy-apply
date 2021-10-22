@@ -34,7 +34,8 @@ def create(jobName,employerID,companyName,email,industry,location,introduction):
     return make_response(message)
 
 @job_service.route('/applyjob/<jobID>', methods=['PUT'])
-@login_required
+#@login_required
+#@roles_required('applicant')
 def applyjob(jobID):
     #request_method = request.method
     #jobID = request.form["jobID"]
