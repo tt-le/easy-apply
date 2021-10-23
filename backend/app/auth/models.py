@@ -43,6 +43,9 @@ class Authentication(UserMixin, Base):
     def get_id(self):
         return self.id
     
+    def get_email(self):
+        return self.email
+    
     def has_role(self, role_name):
         role = Role.query.filter_by(name=role_name).first()
         if role in self.roles:

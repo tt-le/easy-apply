@@ -11,7 +11,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app import db, require_role
 
 # Import module models (i.e. Dummy)
-from app.job_service.models import Jobs
+from app.job_service.models import AppliedJob, Jobs
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
@@ -26,17 +26,46 @@ def create(jobName,employerID,companyName,email,industry,location,introduction):
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)
     return make_response(message)
- 
+
+@job_service.route('/applyjob/<jobID>', methods=['PUT'])
+#@login_required
+#@roles_required('applicant')
+def applyjob(jobID):
+    #request_method = request.method
+    #jobID = request.form["jobID"]
+    #jobName = request.form["jobName"]
+    #employerID = request.form["employerId"]
+    #companyName = request.form["companyName"]
+    #email = request.form["email"]
+    #industry = request.form["industry"]
+    #location = request.form["location"]
+    #introduction = request.form["introduction"]
+    print(current_user.get_id)
+    db.session.add(AppliedJob(jobID,current_user.get_id))
+    db.session.commit()
+    message = f"<div> Applyed to job with jobID:{jobID} and userID: {current_user.get_id} </div>"
+    print(message)
+    return make_response(message)
+
 @job_service.route('/get', methods=['GET'])
 def get():
     table = db.session.execute("SELECT * FROM jobs")
-    message = "List of jobs"
-    res = {'table':[]}
-    for job in table:
-        message += f"<div> ID: {job.jobID} Job: {job.jobName}! </div>"
-        res['table'].append(job.Jobname) 
-    print(message)
-    return make_response(jsonify(res))
+    job_list = {'jobs':[]}
+    for jobs in table:
+        #job_list["jobs"].append(jobs)
+        job_dict = {
+            "jobName": jobs.jobName,
+            "employerID": jobs.employerID,
+            "companyName": jobs.companyName,
+            "email": jobs.email,
+            "industry": jobs.industry,
+            "location": jobs.location,
+            "introduction": jobs.introduction
+        }
+        print(job_dict)
+        job_list["jobs"].append(job_dict)
+    print(job_list)    
+    return make_response(jsonify(job_list))
         
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):

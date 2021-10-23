@@ -101,3 +101,39 @@ def logout():
     logout_user()
     return make_response("Successfully logged out", 201)
     
+@auth_service.route("/profile", methods=['GET'])
+@login_required
+def get_profile():
+    data = None
+    if current_user.has_role('applicant'):
+        data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
+    else:
+        data = Employer.query.filter_by(user_id=current_user.get_id()).first()
+    return make_response(jsonify(data), 201)
+
+@auth_service.route("/profile", methods=['PUT'])
+def edit_profile():
+    req = request.json
+    if current_user.has_role('applicant'):
+        data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
+    else:
+        data = Employer.query.filter_by(user_id=current_user.get_id()).first()
+        
+    if(data.count() > 0):
+        name = request.get("name")
+        age = request.get("age")
+        # introduction = request.get("introduction")
+        data.name = name
+        data.age = age
+        # data.introduction = introduction
+        db.session.commit()
+    else:
+        company_name = request.get("company name")
+        manager_first_name = request.get("manager first name")
+        manager_last_name = request.get("manager last name")
+        data.company_name = company_name
+        data.firstName = manager_first_name
+        data.lastName = manager_last_name
+        db.session.commit()
+        
+    return make_response("Successful edit", 201)
