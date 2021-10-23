@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Button} from "@material-ui/core";
 
 const FileUploader = props => {
@@ -8,8 +8,7 @@ const FileUploader = props => {
     hiddenFileInput.current.click();
   };
   const handleChange = event => {
-    const fileUploaded = event.target.files[0];
-    props.handleFile(fileUploaded);
+    props.setSelectedFile(event.target.files[0]);
   };
   return (
     <Grid fullwidth>
@@ -18,6 +17,7 @@ const FileUploader = props => {
         {props.text}
       </Button>
       <input type="file"
+             name="file"
              ref={hiddenFileInput}
              onChange={handleChange}
              style={{display:'none'}} 

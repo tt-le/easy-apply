@@ -76,10 +76,18 @@ const validationSchemaEmployer = yup.object().shape({
   country: yup.string().required("Required"),
 });
 
-function register(history, user, registerObject) {
-  console.log(registerObject);
+function register(history, user, selectedPhoto, selectedVideo, registerObject) {
+  var form_data = new FormData();
   registerObject["role"] = user;
-  req.post("auth/signup", registerObject).then((resp) => {
+
+  for(var key in registerObject) {
+    form_data.append(key, registerObject[key]);
+  }
+
+  form_data.append("photo", selectedPhoto);
+  form_data.append("video", selectedVideo);
+
+  req.post("auth/signup", form_data).then((resp) => {
     if(resp.status == 201) {
       history.push("/JobBoard");
     }
@@ -92,12 +100,14 @@ function register(history, user, registerObject) {
 
 function SignUpForm(props) {
   const [user, setUser] = useState("Applicant");
+  const [selectedPhoto, setSelectedPhoto] = useState();
+  const [selectedVideo, setSelectedVideo] = useState();
   let history = useHistory();
 
   if(user == "Applicant") {
     return (
       <Formik initialValues={initialValuesApplicant} validationSchema={validationSchemaApplicant}
-      onSubmit={( nextValues ) => { register(history, user, nextValues) }}>
+      onSubmit={( nextValues ) => { register(history, user, selectedPhoto, selectedVideo, nextValues) }}>
         {({ submitForm, isSubmitting, touched, errors }) => (
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Form>
@@ -241,10 +251,10 @@ function SignUpForm(props) {
                 </Grid>
                 <Grid item container spacing={2}>
                   <Grid item xs={6}>
-                    <FileUploader text="Profile Picture" />
+                    <FileUploader text="Profile Picture" setSelectedFile={setSelectedPhoto}/>
                   </Grid>
                   <Grid item xs={6}>
-                  <FileUploader text="Elevator Pitch" fullwidth/>
+                  <FileUploader text="Elevator Pitch"setSelectedFile={setSelectedVideo} fullwidth/>
                   </Grid>
                 </Grid>
                 <Grid item container justify="center">

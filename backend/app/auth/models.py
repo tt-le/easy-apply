@@ -31,12 +31,14 @@ class User(Base):
     # Authorisation Data: role & status
     role     = db.Column(db.String(128), nullable=False)
     status   = db.Column(db.SmallInteger, nullable=False)
+    profilePath = db.Column(db.String(400), nullable=True)
+    videoPath = db.Column(db.String(400), nullable=True)
     # applicant = db.relationship('Applicant', backref=db.backref("User"))
 
 
 
     # New instance instantiation procedure
-    def __init__(self, firstName, lastName, email, password, address, city, country, role, status):
+    def __init__(self, firstName, lastName, email, password, address, city, country, role, status, profilePath, videoPath):
 
         self.firstName     = firstName
         self.lastName     = lastName
@@ -47,6 +49,8 @@ class User(Base):
         self.country = country
         self.role = role
         self.status = status
+        self.profilePath = profilePath
+        self.videoPath = videoPath
 
     def __repr__(self):
         return '<User %r>' % (self.name)     

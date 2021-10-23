@@ -9,6 +9,7 @@ from app import db, bcrypt
 
 # Import module models 
 from app.auth.models import User#, Applicant, Employer
+import os
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
@@ -30,7 +31,8 @@ def get():
 @auth_service.route('/signup', methods=['POST'])
 def signup():
     secondary_role = None
-    req = request.json
+    req = request.form
+    print(req)
     firstName = req.get("firstName")
     lastName = req.get("lastName")
     email = req.get("email")
@@ -39,9 +41,6 @@ def signup():
     address = req.get("address")
     city = req.get("city")
     country = req.get("country")
-    user = User(firstName=firstName, lastName=lastName,
-     email=email, password=pw, address=address, city=city, 
-     country=country, role=role, status=1)
     # if True or role == "applicant":
     #     birthDate = req.get("birthDate")
     #     gender = req.get("gender")
@@ -55,6 +54,30 @@ def signup():
         # user = User(firstName=firstName, lastName=lastName,
         # email=email, password=pw, address=address, city="city", 
         # country=country, role=role, status=1)
+        filePathVid = None
+        try:
+            if(request.files["video"].filename != ""):
+                filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + email
+                os.makedirs(filePathVid)
+                filePathVid = filePathVid + "/" + request.files["video"].filename
+                request.files["video"].save(filePathVid)
+        except KeyError:
+            print("No Video Attached")
+
+        filePathPhoto = None
+        try:
+            if(request.files["photo"].filename != ""):
+                filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + email
+                os.makedirs(filePathPhoto)
+                filePathPhoto = filePathPhoto + "/" + request.files["photo"].filename
+                request.files["photo"].save(filePathPhoto)
+        except KeyError:
+            print("No Photo Attached")
+
+        user = User(firstName=firstName, lastName=lastName,
+                    email=email, password=pw, address=address, city=city, 
+                    country=country, role=role, status=1, videoPath=filePathVid, profilePath=filePathPhoto)
+
         db.session.add(user)
         # db.session.add(secondary_role)
         db.session.commit()
