@@ -8,7 +8,7 @@ from flask import Blueprint, request, render_template, \
 from app import db, bcrypt
 
 # Import module models 
-from app.auth.models import User#, Employer, Employer
+from app.auth.models import User#, Applicant, Employer
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
