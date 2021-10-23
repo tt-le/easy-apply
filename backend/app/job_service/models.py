@@ -1,6 +1,7 @@
 # Import the database object (db) from the main application module
 # We will define this inside /app/__init__.py in the next sections.
 from app import db
+from app.auth.models import Authentication
  
 # Define a base model for other database tables to inherit
 class Base(db.Model):
@@ -36,10 +37,11 @@ class Jobs(Base):
         return '<Jobs %r>' % (self.name) 
 
 class AppliedJob(Base):
-    __tablename__ = 'jobs'
+    __tablename__ = 'appliedJobs'
     job = db.relationship(Jobs)
-    jobID = db.Column(db.Integer, db.ForeignKey('job.id') ,nullable=False)
-    userID = db.Column(db.Integer, db.ForeignKey('role.user_id'), nullable = False)
+    auth = db.relationship(Authentication)
+    jobID = db.Column(db.Integer, db.ForeignKey('jobs.id') ,nullable=False)
+    userID = db.Column(db.Integer, db.ForeignKey('auth.id'), nullable = False)
     
     # New instance instantiation procedure
     def __init__(self, jobID, userID):

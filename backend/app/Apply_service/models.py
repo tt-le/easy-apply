@@ -15,7 +15,7 @@ class Base(db.Model):
 class AppliedJobs(Base):
     __tablename__ = 'Appliedjobs'
     emailID = db.Column(db.String(255),  nullable=False)
-     = db.column(db.String(255), nullable = False)
+    AppliedJobs = db.column(db.String(255), nullable = False)
     
     # New instance instantiation procedure
     def __init__(self,emailID, Appliedjobs):
