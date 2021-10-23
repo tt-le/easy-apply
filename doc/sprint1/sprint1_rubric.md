@@ -204,27 +204,37 @@ Total Mark: 10
     - 1 mark = one member is not present
     - 0 marks = more than one member is not present
   
+  Your Mark: 2
+  
   - Working software (max 2 marks)
     - 8 marks = features presented work flawlessly
     - 1 mark removed for each bug/error identified or for missing records on Jira
-
+  
+  Your Mark: 8
+  
   - Presentation (max 2 marks)
     - 2 marks = UI demonstrated is visually appealing and intuitive for users
     - 1 mark = one or more errors identified by the demo TA
     - 0 marks = UI is visually unappealing
-
+  
+  UI for homepage is not visually appealing.
+  
+  Your Mark: 1
+  
   - Documentation (max 2 marks)
 
   - 2 marks = documentation has been created for frontend and backend systems with great detail
   - 1 mark = documentation has been created for frontend and backend systems with some errors
   - 0 marks = documentation has not been created
 
-  Your Mark: __ / 14
+  Your Mark: 2
+
+  Your Mark: 13 / 14
 
 ---
 
 
 ## Total Mark
 
-71 / 90
+84 / 90
 

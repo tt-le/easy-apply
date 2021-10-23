@@ -102,6 +102,7 @@ function SignUpForm(props) {
   const [user, setUser] = useState("Applicant");
   const [selectedPhoto, setSelectedPhoto] = useState();
   const [selectedVideo, setSelectedVideo] = useState();
+
   let history = useHistory();
 
   if(user == "Applicant") {

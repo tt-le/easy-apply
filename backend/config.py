@@ -7,7 +7,8 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'secret_key') #TODO change value
     DEBUG = False
     # tentative db uri: user:pwd@host:port/dbname
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummyDB"
+    
 
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres

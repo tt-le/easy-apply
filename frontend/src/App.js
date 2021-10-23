@@ -9,6 +9,7 @@ import SearchBar from './Components/SearchBar'
 import SignUp from './pages/Signup'
 import Login from './pages/Login'
 import landingPage from "./pages/Landing";
+import profilePage from "./pages/profilePage"
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path="/signup" exact component={SignUp} />
         <Route path='/login' exact component={Login}/>
         <Route path="/JobBoard" exact component={SearchBar} />
-      </Switch>
+        <Route path="/profile" exact component={profilePage}/>
+    </Switch>
   );
 }
 

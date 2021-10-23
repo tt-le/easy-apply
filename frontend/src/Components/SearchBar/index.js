@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -6,7 +6,23 @@ import api from "../../api";
 
 function SearchBar({placeholder, data}){
     const [filteredData, setFilteredData] = useState([]); 
+
+    const [unfilteredData, setUnfilteredData] = useState([]); // CREATING A CONSTANT UNFILTERED DATA
     const [wordEntered, setWordEntered] = useState(""); 
+    
+    const beforeAll = async () => {
+        const dict2 = await api.get("/jobs/get"); //GET CALL TO GET ALL JOBS
+        const myData2 = dict2['data']['jobs']; //SETTING VARIABLE TO MYDATA2
+        setUnfilteredData(myData2); 
+
+        //console.log(dict2);
+       // console.log(myData2);
+    };
+
+    useEffect(() => {  
+        {beforeAll()}
+
+       });
 
     const handleFilter = async(event) => {
         const searchWord = event.target.value 
@@ -14,6 +30,7 @@ function SearchBar({placeholder, data}){
         
         const dict = await api.get("/jobs/search/"+searchWord);
         const myData = dict['data']['jobs']; 
+        setFilteredData(myData); 
 
         const newFilter = myData.filter((value) => {
             return value.jobName.toLowerCase().includes(searchWord.toLowerCase()) || value.companyName.toLowerCase().includes(searchWord.toLowerCase()); 
@@ -21,30 +38,26 @@ function SearchBar({placeholder, data}){
 
         if (searchWord === "") {
             setFilteredData([]); 
+            //setUnfilteredData(myData2); //IF SEARCH WORD IS EMPTY SET UNFILTERED DATA TO MYDATA2
         }
         else {
             setFilteredData(newFilter); 
+            //setUnfilteredData(myData2);
         }
 
-        // for (var i = 0; i<data.length; i++) {
-        //     return data[i].title.toLowerCase().includes(searchWord.toLowerCase()); 
-        // }; 
-
-        console.log(dict);
-        
-        console.log(filteredData); 
+        //console.log(filteredData); 
     }; 
 
     const clearInput = () => {
+        //setUnfilteredData(myData2);
         setFilteredData([]); 
         setWordEntered(""); 
     }
-
     return (
         <div className="app-container">
-            <div className="search">
+            <div className="search" onBeforeInput={beforeAll}>
                 <div className="searchInputs">
-                    <input type="text" placeholder={placeholder}  value={wordEntered} onChange={handleFilter} />
+                    <input type="text" placeholder="Search for Jobs"  value={wordEntered} onChange={handleFilter} />
                     <div className="searchIcon">
                         {filteredData.length === 0 ? (
                         <SearchIcon /> 
@@ -74,6 +87,21 @@ function SearchBar({placeholder, data}){
                         <th>Location</th>
                     </tr>
                 </thead>
+
+                {filteredData.length === 0 ? ( //IF STATEMENT
+                    <tbody>
+                    {unfilteredData.map((info) => (
+                        <tr>
+                        <td>{info.companyName}</td>
+                        <td>{info.jobName}</td>
+                        <td>{info.introduction}</td>
+                        <td>{info.location}</td>
+                    </tr>
+                    ))}
+
+                </tbody>
+                 ) : (
+
                 <tbody>
                     {filteredData.map((info) => (
                         <tr>
@@ -85,10 +113,8 @@ function SearchBar({placeholder, data}){
                     ))}
                     
                 </tbody>
+                )}
             </table>
-
-
-
         </div>
     )
 
