@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, make_response
 from flask_cors import CORS
 # DB imports
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
+from functools import wraps
 
 from flask_bcrypt import Bcrypt
 # Define the WSGI application object
@@ -29,6 +30,17 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+def require_role(role):
+    """make sure user has this role"""
+    def decorator(func):
+        @wraps(func)
+        def wrapped_function(*args, **kwargs):
+            if not current_user.has_role(role):
+                return make_response("Unauthorized role", 401)
+            else:
+                return func(*args, **kwargs)
+        return wrapped_function
+    return decorator
 
 
 

@@ -1,21 +1,25 @@
-
+import datetime
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
 
-from flask_login import login_user, logout_user, login_required, current_user
-
+from flask_login import  login_user, logout_user, current_user, login_required
 
 # Import the database object from the main app module and bcrypt
-from app import db, bcrypt, login_manager
-
+from app import db, bcrypt, login_manager, app, require_role
 # Import module models 
 from app.auth.models import Role, Applicant, Employer, Authentication
 
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
+
+
+# Roles
+applicant_role = Role(name="applicant")
+employer_role =  Role(name="employer")
+db.session.commit()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -24,6 +28,7 @@ def load_user(user_id):
 # Test method
 @auth_service.route('/get', methods=['GET'])
 @login_required
+@require_role('applicant')
 def get():
     print(current_user)
     users = Applicant.query.all()
@@ -49,27 +54,26 @@ def signup():
 
     query = Authentication.query.filter_by(email=email).first()
     if query is None:
-        
+        auth = Authentication(email=email, email_confirmed_at=datetime.datetime.utcnow(), password=pw)
+        db.session.add(auth)
+        db.session.flush()
+
         if role == "applicant":
+            auth.roles = [applicant_role]
             birthDate = req.get("birthDate")
             gender = req.get("gender")
-            role = Role(role="applicant", status=1)
-            db.session.add(role)
-            db.session.flush()
-            applicant = Applicant(user_id=role.user_id, firstName=firstName, lastName=lastName,
+            applicant = Applicant(user_id=auth.id, firstName=firstName, lastName=lastName,
                 address=address, city=city, country=country, gender=gender, birthDate=birthDate)
             db.session.add(applicant)
-        else:
-            org = req.get("organization")
-            role = Role(role="employer", status=1)
-            db.session.add(role)
             db.session.flush()
-            employer = Employer(user_id=role.user_id, firstName=firstName, lastName=lastName,
-                address=address, city=city, country=country, organization=org)
+        else:
+            auth.roles = [employer_role]
+            org = req.get("organization")
+            employer = Employer(user_id=auth.id, firstName=firstName, lastName=lastName,
+                address=address, city=city, country=country, company_name=org)
             db.session.add(employer)
-            
-        auth = Authentication(user_id=role.user_id, email=email, password=pw)
-        db.session.add(auth)
+            db.session.flush()
+        
         db.session.commit()
         message = f"Successfully create a new user" + str(role)
 
