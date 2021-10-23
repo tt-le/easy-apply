@@ -5,9 +5,10 @@ from operator import methodcaller
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
+from flask_login import login_user, logout_user, current_user, login_required
 
 # Import the database object from the main app module
-from app import db
+from app import db, require_role
 
 # Import module models (i.e. Dummy)
 from app.job_service.models import AppliedJob, Jobs
@@ -17,17 +18,10 @@ job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 
 # Set the route and accepted methods
 @job_service.route('/create/<jobName>/<employerID>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['PUT'])
+@login_required
+@require_role('employer')
 def create(jobName,employerID,companyName,email,industry,location,introduction):
-    #request_method = request.method
-    #jobID = request.form["jobID"]
-    #jobName = request.form["jobName"]
-    #employerID = request.form["employerId"]
-    #companyName = request.form["companyName"]
-    #email = request.form["email"]
-    #industry = request.form["industry"]
-    #location = request.form["location"]
-    #introduction = request.form["introduction"]
-    db.session.add(Jobs(jobName,employerID,companyName,email,industry,location,introduction))
+    db.session.add(Jobs(jobName,current_user.get_id(),companyName,email,industry,location,introduction))
     db.session.commit()
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)

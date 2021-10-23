@@ -1,88 +1,114 @@
 # Import the database object (db) from the main application module
 # We will define this inside /app/__init__.py in the next sections.
 from app import db
+from flask_login import UserMixin
 
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
-
     __abstract__  = True
-
-    id            = db.Column(db.Integer, primary_key=True)
     date_created  = db.Column(db.DateTime,  default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime,  default=db.func.current_timestamp(),
                                            onupdate=db.func.current_timestamp())
 
 # Define a User model
-class User(Base):
+class UserRoles(Base):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('auth.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+    # status   = db.Column(db.SmallInteger, nullable=False)
 
-    __tablename__ = 'User'
-
-    firstName = db.Column(db.String(128),  nullable=False)
-    lastName  = db.Column(db.String(128),  nullable=False)
-
-    # Identification Data: email & password
-    email    = db.Column(db.String(128),  nullable=False,
-                                            unique=True)
-    password = db.Column(db.String(192),  nullable=False)
-    address = db.Column(db.String(128),  nullable=False)
-    city= db.Column(db.String(128), nullable=False)
-    country= db.Column(db.String(128), nullable=False)
-    # Authorisation Data: role & status
-    role     = db.Column(db.String(128), nullable=False)
-    status   = db.Column(db.SmallInteger, nullable=False)
-    # applicant = db.relationship('Applicant', backref=db.backref("User"))
-
-
-
-    # New instance instantiation procedure
-    def __init__(self, firstName, lastName, email, password, address, city, country, role, status):
-
-        self.firstName     = firstName
-        self.lastName     = lastName
-        self.email    = email
-        self.password = password
-        self.address = address
-        self.city = city
-        self.country = country
-        self.role = role
-        self.status = status
+    def __init__(self, user_id, role_id):
+        self.user_id = user_id
+        self.role_id = role_id
+        # self.status = status
 
     def __repr__(self):
-        return '<User %r>' % (self.name)     
+        return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role_id, self.status)     
 
-class Employer(Base):
+class Role(Base):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    
+class Authentication(UserMixin, Base):
+    __tablename__ = 'auth'
+    id    = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(128), unique=True)
+    email_confirmed_at = db.Column(db.DateTime())
+    password = db.Column(db.String(192),  nullable=False)
+    roles = db.relationship('Role', secondary='user_roles')
+     
+    def get_id(self):
+        return self.id
+    
+    def get_email(self):
+        return self.email
+    
+    def has_role(self, role_name):
+        role = Role.query.filter_by(name=role_name).first()
+        if role in self.roles:
+            return True
+        else:
+            return False
 
-    __tablename__ = 'auth_employer'
-
-    # company information
-    company_name    = db.Column(db.String(128), nullable=False)
-    manager_first_name = db.Column(db.String(128), nullable=False)
-    manager_last_name = db.Column(db.String(128), nullable=False)
-    address = db.Column(db.String(128), nullable = False)
-    city = db.Column(db.String(128), nullable=False)
-    country = db.Column(db.String(128), nullable=False)
-    #company login details
-    company_email   = db.Column(db.String(128), nullable=False,
-                                                     unique=True)
-    password    = db.Column(db.String(192), nullable=False)
-
-    #company authorization
-    role    = db.Column(db.SmallInteger, nullable=False)
-    status  = db.Column(db.SmallInteger, nullable=False)
-
-    #instance instantiation
-    def __init__(self, first_name, last_name, email, password, company_name, address, city, country):
-
-        self.manager_first_name = first_name
-        self.manager_last_name = last_name
-        self.company_email = email
+    def __init__(self, email, email_confirmed_at, password):
+        self.email = email
+        self.email_confirmed_at = email_confirmed_at
         self.password = password
-        self.company_name = company_name
-        self.address = address
-        self.city = city
-        self.country = country
     
     def __repr__(self):
-        return '<Company %r>' % (self.company_name)
-        return '<User {} {} {} {} >'.format(self.firstName,self.lastName, self.email,self.address)
+        return '<Auth user:{}>'.format(self.id)     
+
+class Applicant(Base):
+    __tablename__ = 'applicant'
+    auth = db.relationship(Authentication)
+    user_id = db.Column(db.Integer, db.ForeignKey('auth.id'), primary_key=True)
+    firstName = db.Column(db.String(128),  nullable=False)
+    lastName = db.Column(db.String(128),  nullable=False)
+    address = db.Column(db.String(128),  nullable=False)
+    city = db.Column(db.String(128), nullable=False)
+    country = db.Column(db.String(128), nullable=False)
+    gender = db.Column(db.String(128), nullable=False)
+    birthDate = db.Column(db.String(128), nullable=False)
+
+    def __init__(self, user_id, firstName, lastName, address, city, country, gender, birthDate):
+        self.user_id = user_id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.address = address
+        self.city = city
+        self.country = country
+        self.gender = gender
+        self.birthDate = birthDate
+    
+    def __repr__(self):
+        return '<Applicant {} {}>'.format(self.firstName, self.lastName)
+    
+
+
+class Employer(Base):
+    __tablename__ = 'employer'
+    auth = db.relationship(Authentication)
+    user_id = db.Column(db.Integer, db.ForeignKey('auth.id'),primary_key=True)
+    company_name = db.Column(db.String(128), nullable=False)
+    firstName = db.Column(db.String(128),  nullable=False)
+    lastName = db.Column(db.String(128),  nullable=False)
+    address = db.Column(db.String(128),  nullable=False)
+    city = db.Column(db.String(128), nullable=False)
+    country = db.Column(db.String(128), nullable=False)
+
+    
+    def __init__(self, user_id, firstName, lastName, address, city, country, company_name):
+        self.user_id = user_id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.address = address
+        self.city = city
+        self.country = country
+        self.company_name = company_name
+    
+    def __repr__(self):
+        return '<Employer {} {} {}>'.format(self.company_name, self.firstName, self.lastName)
+    
