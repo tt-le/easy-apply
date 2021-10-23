@@ -86,7 +86,7 @@ class Applicant(Base):
         self.gender = gender
         self.birthDate = birthDate
         self.profilePath = profilePath
-        self.vidPath = vidpath
+        self.vidPath = vidPath
     
     def __repr__(self):
         return '<Applicant {} {}>'.format(self.firstName, self.lastName)
