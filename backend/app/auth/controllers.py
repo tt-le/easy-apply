@@ -75,3 +75,36 @@ def login():
         return make_response("Successfully logged in", 201)
     else:
         return make_response("Incorrect password/email combination", 418)
+
+@auth_service.route("/profile", methods=['GET', 'PUT'])
+def get():
+    email = session.get("email")
+    Userquery = User.query.filter_by(email=email).first()
+#    Employerquery = Employer.query.filter(email=email).first()
+    if(Userquery.count() > 0):
+        response = jsonify(Userquery)
+#    else:
+#        response = jsonify(Employerquery)
+    return make_response(response, 201)
+
+def put():
+    req = request.json
+    email = session.get("email")
+    Userquery = User.query.filter_by(email=email).first()
+#    Employerquery = Employer.query.filter_by(email=email).first()
+    if(Userquery.count() > 0):
+        name = request.get("name")
+        age = request.get("age")
+        introduction = request.get("introduction")
+        Userquery.name = name
+        Userquery.age = age
+        Userquery.introduction = introduction
+        db.session.commit()
+#    else:
+#        company_name = request.get("company name")
+#        manager_first_name = request.get("manager first name")
+#        manager_last_name = request.get("manager last name")
+#        Employerquery.company_name = company_name
+#        Employerquery.manager_first_name = manager_first_name
+#        Employerquery.manager_last_name = manager_last_name
+#        db.session.commit()
