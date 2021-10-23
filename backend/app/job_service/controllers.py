@@ -56,13 +56,22 @@ def applyjob(jobID):
 @job_service.route('/get', methods=['GET'])
 def get():
     table = db.session.execute("SELECT * FROM jobs")
-    message = "List of jobs"
-    res = {'table':[]}
-    for job in table:
-        message += f"<div> ID: {job.jobID} Job: {job.jobName}! </div>"
-        res['table'].append(job.Jobname) 
-    print(message)
-    return make_response(jsonify(res))
+    job_list = {'jobs':[]}
+    for jobs in table:
+        #job_list["jobs"].append(jobs)
+        job_dict = {
+            "jobName": jobs.jobName,
+            "employerID": jobs.employerID,
+            "companyName": jobs.companyName,
+            "email": jobs.email,
+            "industry": jobs.industry,
+            "location": jobs.location,
+            "introduction": jobs.introduction
+        }
+        print(job_dict)
+        job_list["jobs"].append(job_dict)
+    print(job_list)    
+    return make_response(jsonify(job_list))
         
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
