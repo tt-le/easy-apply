@@ -59,7 +59,7 @@ def signup():
         db.session.add(auth)
         db.session.flush()
 
-        if role == "applicant":
+        if role.lower() == "applicant":
             auth.roles = [applicant_role]
             birthDate = req.get("birthDate")
             gender = req.get("gender")

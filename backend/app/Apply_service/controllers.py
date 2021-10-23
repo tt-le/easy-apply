@@ -18,7 +18,6 @@ ApplyJob = Blueprint('ApplyJob', __name__, url_prefix='/ApplyJob')
 @ApplyJob.route('/applyJob/<jobID>', methods=['PUT'])
 def apply(emailID,JobID):
     #if the email has not already applied
-    if()
     db.session.add(emailID,JobID)
     db.session.commit()
 
