@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from 'react';
 import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
@@ -25,7 +24,6 @@ function SearchBar({placeholder, data}){
 
        });
        
-
 
     const handleFilter = async(event) => {
         const searchWord = event.target.value 
@@ -61,7 +59,6 @@ function SearchBar({placeholder, data}){
             <div className="search" onBeforeInput={beforeAll}>
                 <div className="searchInputs">
                     <input type="text" placeholder="Search for Jobs"  value={wordEntered} onChange={handleFilter} />
-
                     <div className="searchIcon">
                         {filteredData.length === 0 ? (
                         <SearchIcon /> 
