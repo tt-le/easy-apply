@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Button} from "@material-ui/core";
 
 const FileUploader = props => {
@@ -8,8 +8,15 @@ const FileUploader = props => {
     hiddenFileInput.current.click();
   };
   const handleChange = event => {
-    const fileUploaded = event.target.files[0];
-    props.handleFile(fileUploaded);
+
+    if(!event.target.files[0].name.match("/.(jpg|jpeg|png|gif)") && props.text == "Profile Picture") {
+      alert("incorrect profile photo format (Accepted: jpeg, png, jpg, gif)")
+    } else if (!event.target.files[0].name.match("/.mp4") && props.text == "Elevator Pitch") {
+      alert("Incorrect elavator pitch format (Accepted: mp4)")
+    } else {
+      props.setSelectedFile(event.target.iles[0])
+    }
+
   };
   return (
     <Grid fullwidth>
@@ -18,6 +25,7 @@ const FileUploader = props => {
         {props.text}
       </Button>
       <input type="file"
+             name="file"
              ref={hiddenFileInput}
              onChange={handleChange}
              style={{display:'none'}} 

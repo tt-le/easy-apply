@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, make_response
 from flask_cors import CORS
 # DB imports
@@ -23,7 +24,6 @@ migrate = Migrate(app, db)
 
 
 bcrypt = Bcrypt(app)
-
 
 
 # flask-login

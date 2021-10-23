@@ -23,7 +23,6 @@ function SearchBar({placeholder, data}){
         {beforeAll()}
 
        });
-       
 
     const handleFilter = async(event) => {
         const searchWord = event.target.value 
@@ -116,8 +115,6 @@ function SearchBar({placeholder, data}){
                 </tbody>
                 )}
             </table>
-
-
         </div>
     )
 

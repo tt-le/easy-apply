@@ -4,6 +4,7 @@ from app import db
 from flask_login import UserMixin
 
 
+
 # Define a base model for other database tables to inherit
 class Base(db.Model):
     __abstract__  = True
@@ -72,8 +73,10 @@ class Applicant(Base):
     country = db.Column(db.String(128), nullable=False)
     gender = db.Column(db.String(128), nullable=False)
     birthDate = db.Column(db.String(128), nullable=False)
+    profilePath = db.Column(db.String(500), nullable=True)
+    vidPath = db.Column(db.String(500), nullable=True)
 
-    def __init__(self, user_id, firstName, lastName, address, city, country, gender, birthDate):
+    def __init__(self, user_id, firstName, lastName, address, city, country, gender, birthDate, profilePath, vidPath):
         self.user_id = user_id
         self.firstName = firstName
         self.lastName = lastName
@@ -82,6 +85,8 @@ class Applicant(Base):
         self.country = country
         self.gender = gender
         self.birthDate = birthDate
+        self.profilePath = profilePath
+        self.vidPath = vidpath
     
     def __repr__(self):
         return '<Applicant {} {}>'.format(self.firstName, self.lastName)
@@ -111,4 +116,3 @@ class Employer(Base):
     
     def __repr__(self):
         return '<Employer {} {} {}>'.format(self.company_name, self.firstName, self.lastName)
-    

@@ -4,13 +4,14 @@ from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
                   make_response
 
+import os
+
 from flask_login import  login_user, logout_user, current_user, login_required
 
 # Import the database object from the main app module and bcrypt
 from app import db, bcrypt, login_manager, app, require_role
 # Import module models 
 from app.auth.models import Role, Applicant, Employer, Authentication
-
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
@@ -42,7 +43,7 @@ def get():
 
 @auth_service.route('/signup', methods=['POST'])
 def signup():
-    req = request.json
+    req = request.form
     firstName = req.get("firstName")
     lastName = req.get("lastName")
     email = req.get("email")
@@ -62,8 +63,29 @@ def signup():
             auth.roles = [applicant_role]
             birthDate = req.get("birthDate")
             gender = req.get("gender")
+            
+            filePathVid = None
+            try:
+                if(request.files["video"].filename != ""):
+                    filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + email
+                    os.makedirs(filePathVid)
+                    filePathVid = filePathVid + "/" + request.files["video"].filename
+                    request.files["video"].save(filePathVid)
+            except KeyError:
+                print("No Video Attached")
+
+            filePathPhoto = None
+            try:
+                if(request.files["photo"].filename != ""):
+                    filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + email
+                    os.makedirs(filePathPhoto)
+                    filePathPhoto = filePathPhoto + "/" + request.files["photo"].filename
+                    request.files["photo"].save(filePathPhoto)
+            except KeyError:
+                print("No Photo Attached")
+            
             applicant = Applicant(user_id=auth.id, firstName=firstName, lastName=lastName,
-                address=address, city=city, country=country, gender=gender, birthDate=birthDate)
+                address=address, city=city, country=country, gender=gender, birthDate=birthDate, profilePath=filePathPhoto, vidPath=filePathVid)
             db.session.add(applicant)
             db.session.flush()
         else:
