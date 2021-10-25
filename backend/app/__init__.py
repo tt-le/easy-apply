@@ -8,8 +8,11 @@ from flask_login import LoginManager, current_user
 from functools import wraps
 
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+
 # Define the WSGI application object
 app = Flask(__name__)
+
 CORS(app)
 
 # Configurations
@@ -21,6 +24,7 @@ app.secret_key = '9b5d6d7fc07866d6f364dd509477ceb520322f7ceaa2587eb87df37a1a97c9
 # by modules and controllers
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+mail = Mail(app)
 
 
 bcrypt = Bcrypt(app)
