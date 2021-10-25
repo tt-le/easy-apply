@@ -18,9 +18,15 @@ auth_service = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 # Roles
-applicant_role = Role(name="applicant")
-employer_role =  Role(name="employer")
-db.session.commit()
+applicant_role = Role.query.filter_by(name="applicant").first()
+employer_role =  Role.query.filter_by(name="employer").first()
+if not applicant_role:
+    applicant_role = Role(name="applicant")
+    db.session.commit()
+if not employer_role:
+    employer_role =  Role(name="employer")
+    db.session.commit()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -157,5 +163,5 @@ def edit_profile():
         data.firstName = manager_first_name
         data.lastName = manager_last_name
         db.session.commit()
-        
+
     return make_response("Successful edit", 201)
