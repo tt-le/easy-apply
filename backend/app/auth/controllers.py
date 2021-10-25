@@ -26,6 +26,7 @@ url_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 def load_user(user_id):
     return Authentication.query.filter_by(id=int(user_id)).first()
 
+
 # Test method
 @auth_service.route('/get', methods=['GET'])
 @login_required
@@ -136,8 +137,25 @@ def signup():
     else:
         return make_response("User already exists",418)
 
+@auth_service.route('/verify-email')
+@login_required
+def verify_email():
+    try:
+        email = request.json.get('email')
+    except:
+        return make_response('Email not in json', 400)
+    token = url_serializer.dumps(email, salt='email-confirmation')
+    msg = Message('Confirm email', sender='easyapplyc01@gmail.com', recipients=[email])
+    link = url_for('auth.confirm_email', token=token, _external=True)
+    msg.body = 'Verify using this link {}'.format(link)
+    try:
+        mail.send(msg)
+        return make_response('Email was sent', 200)
+    except:
+        return make_response('Email wasn\'t sent', 500)
 
-@auth_service.route('forgot_password')
+
+@auth_service.route('/forgot_password')
 def forgot_password():
     try:
         email = request.json.get('email')
@@ -153,7 +171,7 @@ def forgot_password():
     return make_response('Email sent', 200)
     
 
-@auth_service.route('change_password/<token>')
+@auth_service.route('/change_password/<token>')
 def change_password(token):
     try:
         req = request.json
@@ -177,11 +195,15 @@ def login():
     email = req.get("email")
     pw = req.get("password")
     user = Authentication.query.filter_by(email=email).first()
+
+    if user.email_confirmed_at == None:
+        return make_response("Email not verified", 403)
+
     if user and bcrypt.check_password_hash(user.password, pw):
         login_user(user, remember=True)
         return make_response("Successfully logged in", 201)
     else:
-        return make_response("Incorrect password/email combination", 418)
+        return make_response("Incorrect password/email combination", 401)
 
 
 @auth_service.route('/logout')
