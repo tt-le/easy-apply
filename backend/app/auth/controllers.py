@@ -149,7 +149,7 @@ def forgot_password():
     link = url_for('auth.change_password', token=token, _external=True)
     msg.body = 'Change password using this link {}'.format(link)
     mail.send(msg)
-    
+
     return make_response('Email sent', 200)
     
 
@@ -157,13 +157,13 @@ def forgot_password():
 def change_password(token):
     try:
         req = request.json
-        passord = bcrypt.generate_password_hash(req.get("password")).decode('utf8')
+        password = bcrypt.generate_password_hash(req.get("password")).decode('utf8')
     except:
         return make_response('Password missing from request json', 400)
     try:
         email = url_serializer.loads(token, salt='forgot-password', max_age=600)
         user = Authentication.query.filter_by(email=email).first()
-        user.password = passord
+        user.password = password
         db.session.commit()
         db.session.close()
     except SignatureExpired:
