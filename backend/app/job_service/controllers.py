@@ -17,10 +17,17 @@ from app.job_service.models import AppliedJob, Jobs
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 
 # Set the route and accepted methods
-@job_service.route('/create/<jobName>/<employerID>/<companyName>/<email>/<industry>/<location>/<introduction>', methods=['PUT'])
+@job_service.route('/create', methods=['POST'])
 @login_required
 @require_role('employer')
-def create(jobName,employerID,companyName,email,industry,location,introduction):
+def create():
+    req = request.json
+    jobName = req.get("jobName")
+    companyName = req.get("companyName")
+    email = req.get("email")
+    industry = req.get("industry")
+    location = req.get("location")
+    introduction = req.get("introduction")
     db.session.add(Jobs(jobName,current_user.get_id(),companyName,email,industry,location,introduction))
     db.session.commit()
     message = f"<div> Added a job named {jobName}! </div>"
@@ -28,8 +35,8 @@ def create(jobName,employerID,companyName,email,industry,location,introduction):
     return make_response(message)
 
 @job_service.route('/applyjob/<jobID>', methods=['PUT'])
-#@login_required
-#@roles_required('applicant')
+@login_required
+@require_role('applicant')
 def applyjob(jobID):
     #request_method = request.method
     #jobID = request.form["jobID"]
