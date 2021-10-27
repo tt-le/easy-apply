@@ -56,12 +56,10 @@ def apply_CORS(response):
     return response
 
 # Import a module / component using its blueprint handler variable (mod_auth)
-from app.dummy_service.controllers import dummy_service 
 from app.job_service.controllers import job_service
 from app.auth.controllers import auth_service
 
 # Register blueprint(s)
-app.register_blueprint(dummy_service)
 app.register_blueprint(job_service)
 app.register_blueprint(auth_service)
 # app.register_blueprint(xyz_module)
