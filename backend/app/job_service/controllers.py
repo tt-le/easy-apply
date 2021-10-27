@@ -10,7 +10,7 @@ from flask_login import current_user, login_required
 # Import the database object from the main app module
 from app import db, require_role
 
-# Import module models (i.e. Dummy)
+# Import module models ()
 from app.job_service.models import AppliedJob, Jobs
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
@@ -34,19 +34,10 @@ def create():
     print(message)
     return make_response(message)
 
-@job_service.route('/applyjob/<jobID>', methods=['PUT'])
+@job_service.route('/applyjob', methods=['PUT'])
 @login_required
 @require_role('applicant')
 def applyjob():
-    #request_method = request.method
-    #jobID = request.form["jobID"]
-    #jobName = request.form["jobName"]
-    #employerID = request.form["employerId"]
-    #companyName = request.form["companyName"]
-    #email = request.form["email"]
-    #industry = request.form["industry"]
-    #location = request.form["location"]
-    #introduction = request.form["introduction"]
     req = request.json 
     jobID = req.get("jobID")
     print(current_user.get_id)
@@ -61,7 +52,6 @@ def get():
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
-        #job_list["jobs"].append(jobs)
         job_dict = {
             "jobName": jobs.jobName,
             "employerID": jobs.employerID,
@@ -85,7 +75,6 @@ def displayJob(userInput):
     job_list = {'jobs':[]}
     for jobs in table:
         if (userInput in jobs.jobName) or (userInput in jobs.companyName) or (userInput in jobs.industry):
-            #job_list["jobs"].append(jobs)
             job_dict = {
                 "jobName": jobs.jobName,
                 "employerID": jobs.employerID,
