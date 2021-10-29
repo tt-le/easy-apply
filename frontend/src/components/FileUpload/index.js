@@ -9,12 +9,12 @@ const FileUploader = props => {
   };
   const handleChange = event => {
 
-    if(!event.target.files[0].name.match("/.(jpg|jpeg|png|gif)") && props.text == "Profile Picture") {
+    if(!event.target.files[0].name.match(/.(jpg|jpeg|png|gif)/) && props.text == "Profile Picture") {
       alert("incorrect profile photo format (Accepted: jpeg, png, jpg, gif)")
-    } else if (!event.target.files[0].name.match("/.mp4") && props.text == "Elevator Pitch") {
+    } else if (!event.target.files[0].name.match(/.mp4/) && props.text == "Elevator Pitch") {
       alert("Incorrect elavator pitch format (Accepted: mp4)")
     } else {
-      props.setSelectedFile(event.target.iles[0])
+      props.setSelectedFile(event.target.files[0])
     }
 
   };
