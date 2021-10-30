@@ -3,6 +3,7 @@ import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api"; 
+import PopUp from "../PopUp";
 
 function SearchBar({placeholder, data}){
     const [filteredData, setFilteredData] = useState([]); 
@@ -24,7 +25,16 @@ function SearchBar({placeholder, data}){
 
        });
 
+    // togglePop = () => {
+    // this.setState({
+    //     seen: !this.state.seen
+    // });
+    // };
+
+    const [open, setOpen] = useState(false);
+
     const handleFilter = async(event) => {
+
         const searchWord = event.target.value 
         setWordEntered(searchWord);
         
@@ -53,7 +63,9 @@ function SearchBar({placeholder, data}){
         setFilteredData([]); 
         setWordEntered(""); 
     }
-    return (
+
+     return (
+
         <div className="app-container">
             <div className="search" onBeforeInput={beforeAll}>
                 <div className="searchInputs">
@@ -93,7 +105,27 @@ function SearchBar({placeholder, data}){
                     {unfilteredData.map((info) => (
                         <tr>
                         <td>{info.companyName}</td>
-                        <td>{info.jobName}</td>
+
+                        <td>
+                        <div>
+                        <div className="btn">
+                            <button onClick={() => setOpen(!open)}> {info.jobName}  </button>
+                         </div>
+                            {open && (
+                                <div
+                                class="popup"
+                                // className="modal fade"
+                                // tabIndex="-1"
+                                // role="dialog"
+                                // aria-labelledby="exampleModalLabel"
+                                // aria-hidden="true"
+                                >
+                                <spam class="popuptext"> {info.introduction} </spam>
+                                </div>
+                            )}
+                    </div>
+                        
+                        </td>
                         <td>{info.introduction}</td>
                         <td>{info.location}</td>
                     </tr>
@@ -106,7 +138,14 @@ function SearchBar({placeholder, data}){
                     {filteredData.map((info) => (
                         <tr>
                         <td>{info.companyName}</td>
-                        <td>{info.jobName}</td>
+                        <td>    
+                    <div>
+                        <div className="btn">
+                            <button>{info.jobName}</button>
+                         </div>
+                    </div>
+                    
+                    </td>
                         <td>{info.introduction}</td>
                         <td>{info.location}</td>
                     </tr>
@@ -119,5 +158,6 @@ function SearchBar({placeholder, data}){
     )
 
 }
+
 
 export default SearchBar

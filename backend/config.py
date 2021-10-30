@@ -12,7 +12,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummyDB"
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -20,7 +20,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummyDB"
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -28,7 +28,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     # uncomment the line below to use postgres
-    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummyDB"
 
 
 config_by_name = dict(
