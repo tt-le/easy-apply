@@ -40,12 +40,9 @@ def create():
 def applyjob():
     req = request.json 
     jobID = req.get("jobID")
-    print(current_user.get_id)
-    db.session.add(AppliedJob(jobID,current_user.get_id))
+    db.session.add(AppliedJob(jobID,current_user.get_id()))
     db.session.commit()
-    message = f"<div> Applyed to job with jobID:{jobID} and userID: {current_user.get_id} </div>"
-    print(message)
-    return make_response(message)
+    return "sucessful commit"
 
 @job_service.route('/get', methods=['GET'])
 def get():
