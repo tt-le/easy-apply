@@ -3,10 +3,12 @@ import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api"; 
-import PopUp from "../PopUp";
+import PopUp from "../PopUp"; 
 
 function SearchBar({placeholder, data}){
-    const [filteredData, setFilteredData] = useState([]); 
+    const [filteredData, setFilteredData] = useState([]);
+    
+   // const [buttonPopup, setButtonPopup] = useState(false); 
 
     const [unfilteredData, setUnfilteredData] = useState([]); // CREATING A CONSTANT UNFILTERED DATA
     const [wordEntered, setWordEntered] = useState(""); 
@@ -23,7 +25,7 @@ function SearchBar({placeholder, data}){
     useEffect(() => {  
         {beforeAll()}
 
-       });
+       },[]);
 
     // togglePop = () => {
     // this.setState({
@@ -107,11 +109,13 @@ function SearchBar({placeholder, data}){
                         <td>{info.companyName}</td>
 
                         <td>
-                        <div>
                         <div className="btn">
-                            <button onClick={() => setOpen(!open)}> {info.jobName}  </button>
+                            <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
+                                <button onClick={() => setButtonPopup(true)}> Open Popup </button>
+                                <h3>My Popup</h3>
+                            </PopUp>
                          </div>
-                            {open && (
+                            {/* {open && (
                                 <div
                                 class="popup"
                                 // className="modal fade"
@@ -122,8 +126,7 @@ function SearchBar({placeholder, data}){
                                 >
                                 <spam class="popuptext"> {info.introduction} </spam>
                                 </div>
-                            )}
-                    </div>
+                            )} */}
                         
                         </td>
                         <td>{info.introduction}</td>
