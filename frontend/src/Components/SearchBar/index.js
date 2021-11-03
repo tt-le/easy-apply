@@ -27,11 +27,6 @@ function SearchBar({placeholder, data}){
 
        },[]);
 
-    // togglePop = () => {
-    // this.setState({
-    //     seen: !this.state.seen
-    // });
-    // };
 
     const [open, setOpen] = useState(false);
 
