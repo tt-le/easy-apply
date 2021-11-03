@@ -1,20 +1,16 @@
-import React, {useState} from "react";
-
-
-function PopUp() {
-
-  const [buttonPopup, setButtonPopup] = useState(false); 
+import React from "react";
   
-    return <div> 
-        {(buttonPopup) ? (
-      <div className="popup">
-        <div className="popup-inner"> 
-          <button className="close-btn" onClick={() => setButtonPopup(false)} >Close Popup</button>
-        </div>
+function PopUp(props) {
+
+  return (props.trigger) ? (
+    <div className="popup">
+      <div className="popup-inner"> 
+      //<p>{props.message}</p>
+        <button className="close-btn" onClick={() => props.setTrigger(false)} >Close Popup</button>
+      {props.children}
       </div>
-      ) : ""}
     </div>
-  
-    }
-  
-    export default PopUp
+    ) : ""; 
+  }
+
+  export default PopUp 

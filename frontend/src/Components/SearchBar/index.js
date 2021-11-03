@@ -8,7 +8,7 @@ import PopUp from "../PopUp";
 function SearchBar({placeholder, data}){
     const [filteredData, setFilteredData] = useState([]);
     
-   // const [buttonPopup, setButtonPopup] = useState(false); 
+    const [buttonPopup, setButtonPopup] = useState(false); 
 
     const [unfilteredData, setUnfilteredData] = useState([]); // CREATING A CONSTANT UNFILTERED DATA
     const [wordEntered, setWordEntered] = useState(""); 
@@ -50,18 +50,13 @@ function SearchBar({placeholder, data}){
 
         if (searchWord === "") {
             setFilteredData([]); 
-            //setUnfilteredData(myData2); //IF SEARCH WORD IS EMPTY SET UNFILTERED DATA TO MYDATA2
         }
         else {
             setFilteredData(newFilter); 
-            //setUnfilteredData(myData2);
         }
-
-        //console.log(filteredData); 
     }; 
 
     const clearInput = () => {
-        //setUnfilteredData(myData2);
         setFilteredData([]); 
         setWordEntered(""); 
     }
@@ -110,8 +105,8 @@ function SearchBar({placeholder, data}){
 
                         <td>
                         <div className="btn">
+                            <button onClick={() => setButtonPopup(true)}> Open Popup </button>
                             <PopUp trigger={buttonPopup} setTrigger={setButtonPopup}>
-                                <button onClick={() => setButtonPopup(true)}> Open Popup </button>
                                 <h3>My Popup</h3>
                             </PopUp>
                          </div>
