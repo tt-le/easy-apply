@@ -1,15 +1,14 @@
 import React from "react";
 import './App.css';
-import { Route, Switch, Redirect } from "react-router-dom";
-// import api from './api';
+import { Route, Switch } from "react-router-dom";
 
-import Dummy from './pages/Dummy'
-import JobBoard from './pages/JobBoard'
-import SearchBar from './Components/SearchBar'
-import SignUp from './pages/Signup'
-import Login from './pages/Login'
+// import Dummy from './pages/Dummy'
+// import JobBoard from './pages/JobBoard'
+import SearchBar from './Components/SearchBar';
+import SignUp from './pages/Signup';
+import Login from './pages/Login';
 import landingPage from "./pages/Landing";
-import profilePage from "./pages/profilePage"
+import profilePage from "./pages/profilePage";
 
 function App() {
   return (
