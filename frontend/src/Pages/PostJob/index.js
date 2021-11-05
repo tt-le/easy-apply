@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState } from 'react'
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
@@ -36,28 +35,17 @@ function PostJob() {
     };
 
     const handleClick = () => {
-        console.log("Title is", Title)
-        console.log("Company is", Company)
-        console.log("Email is", Email)
-        console.log("Industry is", Industry)
-        console.log("Location is", Location)
-        console.log("Des is", Description)
+        // console.log("Title is", Title)
+        // console.log("Company is", Company)
+        // console.log("Email is", Email)
+        // console.log("Industry is", Industry)
+        // console.log("Location is", Location)
+        // console.log("Des is", Description)
 
-        // req.post("auth/", {title: Title, description: Description}).then((resp) => {
-        //     if(resp.status == 201) {
-        //     }
-        //   }).catch(error => {
-        //     if(error.response.status == 418) {
-        //     }
-        //   })
-    }
+        req.post("jobs/create", {jobName: Title, companyName:Company, email: Email, industry:Industry, location:Location,
+            introduction: Description})
+        }
     return (
-        // <Box
-        // // sx={{
-        // //     "& .MuiTextField-root": { m: 1, width: '95%' }
-        // // }}
-        // autoComplete="off"
-        // >
         <Container>
             <div className="">
             <TextField
