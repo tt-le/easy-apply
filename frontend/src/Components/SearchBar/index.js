@@ -20,9 +20,8 @@ function SearchBar({placeholder, data}){
     };
 
     useEffect(() => {  
-        {beforeAll()}
-
-       });
+        beforeAll()
+       },[]);
 
     const handleFilter = async(event) => {
         const searchWord = event.target.value 

@@ -26,3 +26,5 @@ const profile = (props) => {
         </div>
     </div>)
 }
+
+export default profile;
