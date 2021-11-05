@@ -1,4 +1,11 @@
-#root {
+.logo{
+    margin-top: 10px;
+    margin-left: 1px;
+    height:50px;
+    width:100px;
+}
+
+/* #root {
     display: flex;
     flex-direction: column;   
 }
@@ -33,4 +40,4 @@ Button {
 
 #bottomBanner {
     display: flex;
-}
+} */
