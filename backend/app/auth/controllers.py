@@ -127,7 +127,7 @@ def signup():
 
         token = url_serializer.dumps(email, salt='email-confirmation')
         msg = Message('Confirm email', sender='easyapplyc01@gmail.com', recipients=[email])
-        link = url_for('auth.confirm_email', token=token, _external=True)
+        link = 'http://localhost:3000/confirmemail/--'+url_for('auth.confirm_email', token=token, _external=True)
         msg.body = 'Verify using this link {}'.format(link)
         mail.send(msg)
 
@@ -146,7 +146,7 @@ def verify_email():
         return make_response('Email not in json', 400)
     token = url_serializer.dumps(email, salt='email-confirmation')
     msg = Message('Confirm email', sender='easyapplyc01@gmail.com', recipients=[email])
-    link = url_for('auth.confirm_email', token=token, _external=True)
+    link = 'http://localhost:3000/confirmemail/--'+url_for('auth.confirm_email', token=token, _external=True)
     msg.body = 'Verify using this link {}'.format(link)
     try:
         mail.send(msg)

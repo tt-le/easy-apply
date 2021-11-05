@@ -15,8 +15,8 @@ class DevelopmentConfig(Config):
     # uncomment the line below to use postgres
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
-    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_USERNAME = 'easyapply00@gmail.com'#os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = 'pojtan-todMu5-sitkeh'#os.getenv('MAIL_PASSWORD')
     MAIL_PORT = 587
     SECRET_KEY = '9b5d6d7fc07866d6f364dd509477ceb520322f7ceaa2587eb87df37a1a97c9a7'
     SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/dummydb"

@@ -48,7 +48,9 @@ def applyjob(jobID):
     return make_response(message)
 
 @job_service.route('/get', methods=['GET'])
+@login_required
 def get():
+    print(current_user)
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
