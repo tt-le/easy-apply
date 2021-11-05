@@ -2,7 +2,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@mui/material/Button';
 import "./profilePage.css"
-import image from "./image.jpg"
+import image from "./im.jpg"
 
 const profile = (props) => {
     return (<div id="root">
