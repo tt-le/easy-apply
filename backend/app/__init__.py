@@ -8,9 +8,12 @@ from flask_login import LoginManager, current_user
 from functools import wraps
 
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+
 # Define the WSGI application object
 app = Flask(__name__)
-CORS(app)
+allowed_headers = ['Content-Type', 'Authorization', 'Access-Control-Allow-Headers','X-Requested-With','Access-Control-Allow-Origin']
+CORS(app,origins=['http://localhost:3000'], supports_credentials=True, allow_headers=allowed_headers)
 
 # Configurations
 app.config.from_object('config.DevelopmentConfig')
@@ -21,6 +24,7 @@ app.secret_key = '9b5d6d7fc07866d6f364dd509477ceb520322f7ceaa2587eb87df37a1a97c9
 # by modules and controllers
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+mail = Mail(app)
 
 
 bcrypt = Bcrypt(app)
@@ -49,11 +53,11 @@ def require_role(role):
 def not_found(error):
     return render_template('404.html'), 404
 
-@app.after_request
-def apply_CORS(response):
-    response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
-    response.headers["Access-Control-Allow-Headers"] =  "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-    return response
+# @app.after_request
+# def apply_CORS(response):
+#     response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+#     response.headers["Access-Control-Allow-Headers"] =  "content-type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+#     return response
 
 # Import a module / component using its blueprint handler variable (mod_auth)
 from app.job_service.controllers import job_service

@@ -45,7 +45,9 @@ def applyjob():
     return "sucessful commit"
 
 @job_service.route('/get', methods=['GET'])
+@login_required
 def get():
+    print(current_user)
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
