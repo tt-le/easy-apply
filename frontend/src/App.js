@@ -10,6 +10,7 @@ import SignUp from './pages/Signup'
 import Login from './pages/Login'
 import landingPage from "./pages/Landing";
 import profilePage from "./pages/profilePage"
+import dashboard from "./pages/Dashboard"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/login' exact component={Login}/>
         <Route path="/JobBoard" exact component={SearchBar} />
         <Route path="/profile" exact component={profilePage}/>
+        <Route path="/dashboard" exact component={dashboard}/>
     </Switch>
   );
 }
