@@ -27,6 +27,7 @@ function DashBoard(){
                         <td>{data.id}</td>
                         <td>{data.position_name}</td>
                         <td>{data.company}</td>
+                        <td><Button>view status</Button></td>
                         </tr>
                     ))}
                 </tbody>
