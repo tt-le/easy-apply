@@ -2,6 +2,7 @@ import React from "react";
 import navBar from "../../Components/NavBar"
 import Button from '@mui/material/Button';
 import data from "./mock_data.json"
+import "./dashboard.css"
 
 
 function DashBoard(){
@@ -13,7 +14,7 @@ function DashBoard(){
         </div>
         <div id = "dashboard_body">
             <h3>view your recent jobs</h3>
-            <table>
+            <table id = "table">
                 <thead>
                     <tr>
                         <th>id</th>
