@@ -19,6 +19,7 @@ function DashBoard(){
                         <th>id</th>
                         <th>position name</th>
                         <th>company</th>
+                        <th>status</th>
                     </tr>
                 </thead>
                 <tbody>
