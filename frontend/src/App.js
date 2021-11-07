@@ -10,6 +10,7 @@ import Login from './Pages/Login';
 import landingPage from "./Pages/Landing";
 import profilePage from "./Pages/profilePage";
 import ConfirmEmail from "./Pages/ConfirmEmail";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/JobBoard" exact component={SearchBar} />
         <Route path="/profile" exact component={profilePage}/>
         <Route path="/confirmEmail" component={ConfirmEmail}/>
+        <Route path="/reset-password" component={ResetPassword}/>
     </Switch>
   );
 }
