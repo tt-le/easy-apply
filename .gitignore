@@ -3,3 +3,13 @@
 .DS_Store
 backend/bin/
 backend/pyvenv.cfg
+backend/bin/activate
+backend/bin/activate.csh
+backend/bin/activate.fish
+backend/bin/alembic
+backend/bin/flask
+backend/bin/mako-render
+backend/bin/pip
+backend/bin/pip3
+backend/bin/pip3.8
+backend/pyvenv.cfg
