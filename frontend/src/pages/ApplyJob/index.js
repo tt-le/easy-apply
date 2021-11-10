@@ -1,30 +1,32 @@
-import React from "react";
-//import DocumentPicker from "react-native-document-picker";
+import React, {useState, useEffect} from 'react';
+import Button from '@material-ui/core/Button';
+ 
+const ApplyJob = () => {
+    const [selectedFile, setSelectedFile] = useState(); //Contains information about currently uploaded file
 
-function ApplyJob () {
-render() {
-    return(
-        <View
-            style={{
-                width: "30%",
-                top: moderateScale(8),
-                justifyContent: "center",
-                borderRadius: moderateScale(10),
-            }}
-            >
-            <TouchableOpacity
-                onPress={() =>this.docPicker()}
-                style={styles.uploadView}
-            >
-                <Image
-                source={images.upload}
-                style={styles.documentStatusImg}
-                />
-            <Text style={styles.uploadTxt}> {'upload  doc'}</Text>
-            </TouchableOpacity>
-            </View>
-    )
-    }
-   };
-
+    const changeHandler = (event) => {
+		setSelectedFile(event.target.files[0]); //Sets selected file to the file uploaded using button below
+	};
+  return (
+    <div style={{
+      display: 'flex',
+      margin: 'auto',
+      width: 400,
+      flexWrap: 'wrap',
+    }}>
+      <input
+        type="file"
+        onChange={changeHandler}
+        style={{ display: 'none' }}
+        id="contained-button-file"
+      /> 
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" color="primary" component="span">
+          Upload Resume
+        </Button>
+      </label>
+    </div>
+  );
+}
+ 
 export default ApplyJob;
