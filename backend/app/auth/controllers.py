@@ -1,30 +1,31 @@
-import datetime
+import datetime, os
 # Import flask dependencies
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for, jsonify, \
-                  make_response
+                  make_response, url_for
 
-import os
+from flask_mail import Message
+
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+
 
 from flask_login import  login_user, logout_user, current_user, login_required
 
 # Import the database object from the main app module and bcrypt
-from app import db, bcrypt, login_manager, app, require_role
+from app import db, bcrypt, login_manager, app, require_role, mail, app
 # Import module models 
 from app.auth.models import Role, Applicant, Employer, Authentication
 
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 auth_service = Blueprint('auth', __name__, url_prefix='/auth')
 
+url_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-# Roles
-applicant_role = Role(name="applicant")
-employer_role =  Role(name="employer")
-db.session.commit()
 
 @login_manager.user_loader
 def load_user(user_id):
     return Authentication.query.filter_by(id=int(user_id)).first()
+
 
 # Test method
 @auth_service.route('/get', methods=['GET'])
@@ -41,6 +42,18 @@ def get():
     return make_response(jsonify(res))
 
 
+@auth_service.route('/confirm-email/<token>')
+def confirm_email(token):
+    try:
+        email = url_serializer.loads(token, salt='email-confirmation', max_age=600)
+        user = Authentication.query.filter_by(email=email).first()
+        user.email_confirmed_at = datetime.datetime.utcnow()
+        db.session.commit()
+        db.session.close()
+    except SignatureExpired:
+        return make_response('Signature expired', 401)
+    return make_response('Email confirmed', 200)
+
 @auth_service.route('/signup', methods=['POST'])
 def signup():
     req = request.form
@@ -53,9 +66,21 @@ def signup():
     city = req.get("city")
     country = req.get("country")
 
+    # Roles
+    applicant_role = Role.query.filter_by(name="applicant").first()
+    employer_role =  Role.query.filter_by(name="employer").first()
+    if not applicant_role:
+        applicant_role = Role(name="applicant")
+        db.session.add(applicant_role)
+        db.session.commit()
+    if not employer_role:
+        employer_role =  Role(name="employer")
+        db.session.add(employer_role)
+        db.session.commit()
+
     query = Authentication.query.filter_by(email=email).first()
     if query is None:
-        auth = Authentication(email=email, email_confirmed_at=datetime.datetime.utcnow(), password=pw)
+        auth = Authentication(email=email, email_confirmed_at=None, password=pw)
         db.session.add(auth)
         db.session.flush()
 
@@ -97,25 +122,88 @@ def signup():
             db.session.flush()
         
         db.session.commit()
+        db.session.close()
         message = f"Successfully create a new user" + str(role)
+
+        token = url_serializer.dumps(email, salt='email-confirmation')
+        msg = Message('Confirm email', sender='easyapplyc01@gmail.com', recipients=[email])
+        link = 'http://localhost:3000/confirmemail/--'+url_for('auth.confirm_email', token=token, _external=True)
+        msg.body = 'Verify using this link {}'.format(link)
+        mail.send(msg)
 
         print(message)
         return make_response(message,201)
+    # elif: if user email not verified...
     else:
         return make_response("User already exists",418)
+
+@auth_service.route('/verify-email')
+@login_required
+def verify_email():
+    try:
+        email = request.json.get('email')
+    except:
+        return make_response('Email not in json', 400)
+    token = url_serializer.dumps(email, salt='email-confirmation')
+    msg = Message('Confirm email', sender='easyapplyc01@gmail.com', recipients=[email])
+    link = 'http://localhost:3000/confirmemail/--'+url_for('auth.confirm_email', token=token, _external=True)
+    msg.body = 'Verify using this link {}'.format(link)
+    try:
+        mail.send(msg)
+        return make_response('Email was sent', 200)
+    except:
+        return make_response('Email wasn\'t sent', 500)
+
+
+@auth_service.route('/forgot_password')
+def forgot_password():
+    try:
+        email = request.json.get('email')
+    except:
+        return make_response('Email missing from rerquest json', 400)
+
+    token = url_serializer.dumps(email, salt='forgot-password')
+    msg = Message('Forgot password', sender='easyapplyc01@gmail.com', recipients=[email])
+    link = url_for('auth.change_password', token=token, _external=True)
+    msg.body = 'Change password using this link {}'.format(link)
+    mail.send(msg)
+
+    return make_response('Email sent', 200)
     
+
+@auth_service.route('/change_password/<token>')
+def change_password(token):
+    try:
+        req = request.json
+        password = bcrypt.generate_password_hash(req.get("password")).decode('utf8')
+    except:
+        return make_response('Password missing from request json', 400)
+    try:
+        email = url_serializer.loads(token, salt='forgot-password', max_age=600)
+        user = Authentication.query.filter_by(email=email).first()
+        user.password = password
+        db.session.commit()
+        db.session.close()
+    except SignatureExpired:
+        return make_response('Signature expired', 401)
+    return make_response('Email confirmed', 200)
+
 
 @auth_service.route('/login', methods=['POST'])
 def login():
-    req = request.json
+    req = request.form
     email = req.get("email")
     pw = req.get("password")
     user = Authentication.query.filter_by(email=email).first()
+
+    if user.email_confirmed_at == None:
+        return make_response("Email not verified", 403)
+
     if user and bcrypt.check_password_hash(user.password, pw):
         login_user(user, remember=True)
         return make_response("Successfully logged in", 201)
     else:
-        return make_response("Incorrect password/email combination", 418)
+        return make_response("Incorrect password/email combination", 401)
 
 
 @auth_service.route('/logout')
@@ -157,7 +245,7 @@ def edit_profile():
         data.firstName = manager_first_name
         data.lastName = manager_last_name
         db.session.commit()
-        
+    db.session.close()
     return make_response("Successful edit", 201)
 
 @auth_service.route("/dashboard", methods=['GET'])
