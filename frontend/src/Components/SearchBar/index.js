@@ -189,7 +189,7 @@ const DataTable = () => {
     const [form] = Form.useForm(); 
     const history = useHistory();
     const [applyRow, setApply] = useState(false); 
-    const navigateTo = (jobId) => history.push('/login'+jobId);//eg.history.push('/login');
+    const navigateTo = (jobId) => history.push('/apply'+jobId);//eg.history.push('/login');
     let[filteredData] = useState(); 
 
     useEffect(() => {
