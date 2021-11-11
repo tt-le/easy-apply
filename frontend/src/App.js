@@ -20,7 +20,7 @@ function App() {
         <Route path='/login' exact component={Login}/>
         <Route path="/JobBoard" exact component={SearchBar} />
         <Route path="/profile" exact component={profilePage}/>
-        <Route path="/apply" exact component={ApplyJob}/>
+        <Route path="/apply" component={ApplyJob}/>
     </Switch>
   );
 }

@@ -189,7 +189,9 @@ const DataTable = () => {
     const [form] = Form.useForm(); 
     const history = useHistory();
     const [applyRow, setApply] = useState(false); 
-    const navigateTo = (jobId) => history.push('/apply'+jobId);//eg.history.push('/login');
+    const navigateTo = (jobId) => {
+        console.log(jobId)
+        history.push(("/apply/"+jobId))}; 
     let[filteredData] = useState(); 
 
     useEffect(() => {
@@ -240,9 +242,12 @@ const DataTable = () => {
         //dataIndex: "location", 
         align: "center",
         render: (_, record) => {
+            console.log(record)
             return gridData.length >= 1 ? (
                 <Space> 
-                    <Button type="primary" onClick={navigateTo}> Apply </Button>
+                    <Button type="primary" onClick={() => {navigateTo(record.employerID)}
+            
+                }> Apply </Button>
                 </Space>
         ): null;
     },
