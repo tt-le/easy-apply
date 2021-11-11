@@ -220,7 +220,7 @@ Tracking on Jira Total Mark: _22_ / 24
     - 1 mark = one member is not present
     - 0 marks = more than one member is not present
   
-  Your Mark: _4
+  Your Mark: _2
   
   - Working software (max 2 marks)
     - 8 marks = features presented work flawlessly
@@ -243,10 +243,10 @@ Tracking on Jira Total Mark: _22_ / 24
 
   Your Mark: _2
 
-  Your Mark: 10 / 14
+  Your Mark: 8 / 14
 
 ---
 
 ## Total Mark
 
-_86_ / 93
+_84_ / 93

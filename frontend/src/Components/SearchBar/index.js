@@ -38,8 +38,7 @@ const DataTable = () => {
         const myData2 = response['data']['jobs'];
         setGridData(myData2); 
         setLoading(false); 
-
-    }; 
+    }
 
     const handleApply = () => {
 

@@ -37,16 +37,16 @@ class Jobs(Base):
         return '<Jobs %r>' % (self.name) 
 
 class AppliedJob(Base):
-    __tablename__ = 'appliedJobs'
-    job = db.relationship(Jobs)
+    __tablename__ = 'appliedjob'
     auth = db.relationship(Authentication)
-    jobID = db.Column(db.Integer, db.ForeignKey('jobs.id') ,nullable=False)
+    jobID = db.Column(db.Integer,nullable=False)
     userID = db.Column(db.Integer, db.ForeignKey('auth.id'), nullable = False)
     
     # New instance instantiation procedure
     def __init__(self, jobID, userID):
-        self.userID = userID
         self.jobID = jobID
+        self.userID = userID
+        
 
     def __repr__(self):
         return '<JobID %r>' % (self.userjobID) 
