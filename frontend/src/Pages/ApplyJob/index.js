@@ -6,9 +6,10 @@ import FileUploader from "../../Components/FileUpload";
 import req from "../../api/index"
  
 const ApplyJob = () => {
-    const [selectedFile, setSelectedFile] = useState(); //Contains information about currently uploaded file
+    const [selectedFile, setSelectedFile] = useState(""); //Contains information about currently uploaded file
+    const [selectedPitch, setSelectedPitch] = useState(""); //Contains information about currently uploaded file
 
-    function register(selectedFile, history ) {
+    function apply(selectedFile, registerObject ) {
         var form_data = new FormData();
       
         form_data.append("resume", selectedFile);
@@ -31,7 +32,7 @@ const ApplyJob = () => {
 
   return (
 
-    <Formik onSubmit={( nextValues ) => { register(selectedFile) }}>
+    <Formik onSubmit={( nextValues ) => { apply(selectedFile) }}>
     {({ submitForm, isSubmitting, touched, errors }) => (
         <Form>
             <div style={{
@@ -42,7 +43,8 @@ const ApplyJob = () => {
             }}>
                 <Grid item container spacing={2}>
                 <Grid item xs={6}>
-                    <FileUploader text="Resume" setSelectedFile={setSelectedFile} page="ApplyJob"/>
+                    <FileUploader text="Upload Resume" setSelectedFile={setSelectedFile} page="ApplyJob"/>
+                    <FileUploader text="Upload Pitch" setSelectedFile={setSelectedPitch} page="ApplyJob"/>
                 </Grid>
                 </Grid>
 
@@ -56,6 +58,7 @@ const ApplyJob = () => {
                 >
                     Upload Resume
                 </Button>
+                
                 </Grid>
 
             </div>

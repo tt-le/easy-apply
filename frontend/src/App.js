@@ -7,11 +7,11 @@ import JobBoard from './pages/JobBoard'
 import ApplyJob from "./pages/ApplyJob";
 
 import SearchBar from './Components/SearchBar';
-import SignUp from './Pages/Signup';
-import Login from './Pages/Login';
-import landingPage from "./Pages/Landing";
-import profilePage from "./Pages/profilePage";
-import ConfirmEmail from "./Pages/ConfirmEmail";
+import SignUp from './pages/Signup';
+import Login from './pages/Login';
+import landingPage from "./pages/Landing";
+import profilePage from "./pages/profilePage";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 function App() {
   return (

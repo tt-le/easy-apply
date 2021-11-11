@@ -18,8 +18,8 @@ job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 
 # Set the route and accepted methods
 @job_service.route('/create', methods=['POST'])
-@login_required
-@require_role('employer')
+# @login_required
+# @require_role('employer')
 def create():
     req = request.json
     jobName = req.get("jobName")
@@ -28,7 +28,7 @@ def create():
     industry = req.get("industry")
     location = req.get("location")
     introduction = req.get("introduction")
-    db.session.add(Jobs(jobName,current_user.get_id(),companyName,email,industry,location,introduction))
+    db.session.add(Jobs(jobName,1,companyName,email,industry,location,introduction))
     db.session.commit()
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)
@@ -45,9 +45,9 @@ def applyjob():
     return "sucessful commit"
 
 @job_service.route('/get', methods=['GET'])
-@login_required
+#@login_required
 def get():
-    print(current_user)
+    #print(current_user)
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
