@@ -288,7 +288,7 @@ function SignUpForm(props) {
   } else if (user == "Employer") {
     return (
       <Formik initialValues={initialValuesEmployer} validationSchema={validationSchemaEmployer}
-      onSubmit={( nextValues ) => { register(history, user, nextValues) }}>
+      onSubmit={( nextValues ) => { register(history, user,null,null, nextValues) }}>
         {({ submitForm, isSubmitting, touched, errors }) => (
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Form>
