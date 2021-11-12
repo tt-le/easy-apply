@@ -13,13 +13,15 @@ from app import db, require_role
 # Import module models ()
 from app.job_service.models import AppliedJob, Jobs
 
+import os
+
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 job_service = Blueprint('jobs', __name__, url_prefix='/jobs')
 
 # Set the route and accepted methods
 @job_service.route('/create', methods=['POST'])
-# @login_required
-# @require_role('employer')
+@login_required
+@require_role('employer')
 def create():
     req = request.json
     jobName = req.get("jobName")
@@ -28,7 +30,7 @@ def create():
     industry = req.get("industry")
     location = req.get("location")
     introduction = req.get("introduction")
-    db.session.add(Jobs(jobName,1,companyName,email,industry,location,introduction))
+    db.session.add(Jobs(jobName,current_user.get_id(),companyName,email,industry,location,introduction))
     db.session.commit()
     message = f"<div> Added a job named {jobName}! </div>"
     print(message)
@@ -38,16 +40,39 @@ def create():
 @login_required
 @require_role('applicant')
 def applyjob():
-    req = request.json 
+    req = request.form 
     jobID = req.get("jobID")
     db.session.add(AppliedJob(jobID,current_user.get_id()))
     db.session.commit()
+
+    filePathPDF = None
+    try:
+        if(request.files["resume"].filename != ""):
+            filePathPDF = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
+            if not os.path.exists(filePathPDF):
+                os.makedirs(filePathPDF)
+            filePathPDF = filePathPDF + "/resume.pdf"
+            request.files["resume"].save(filePathPDF)
+    except KeyError:
+        print("No PDF Attached")
+
+    filePathVid = None
+    try:
+        if(request.files["pitch"].filename != ""):
+            filePathVid = os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(current_user.get_id())
+            if not os.path.exists(filePathVid):
+                os.makedirs(filePathVid)
+            filePathVid = filePathVid + "/pitch.mp4"
+            request.files["pitch"].save(filePathVid)
+    except KeyError:
+        print("No Video Attached")
+
     return "sucessful commit"
 
 @job_service.route('/get', methods=['GET'])
-#@login_required
+@login_required
 def get():
-    #print(current_user)
+    print(current_user)
     table = db.session.execute("SELECT * FROM jobs")
     job_list = {'jobs':[]}
     for jobs in table:
