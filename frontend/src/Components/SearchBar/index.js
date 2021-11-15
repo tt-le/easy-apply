@@ -49,7 +49,7 @@ const DataTable = () => {
 
     const columns = [{ 
         title: "ID",
-        dataIndex: "employerID",
+        dataIndex: "jobID",
     }, 
     {
         title: "Job Name", 
@@ -78,7 +78,7 @@ const DataTable = () => {
             console.log(record)
             return gridData.length >= 1 ? (
                 <Space> 
-                    <Button type="primary" onClick={() => {navigateTo(record.employerID)}
+                    <Button type="primary" onClick={() => {navigateTo(record.jobID)}
             
                 }> Apply </Button>
                 </Space>
@@ -86,7 +86,6 @@ const DataTable = () => {
     },
 },    
 ]; 
-
 
 const handleSearch = (e) => { 
     setSearchText(e.target.value); 

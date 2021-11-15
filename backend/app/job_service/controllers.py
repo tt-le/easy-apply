@@ -83,7 +83,8 @@ def get():
             "email": jobs.email,
             "industry": jobs.industry,
             "location": jobs.location,
-            "introduction": jobs.introduction
+            "introduction": jobs.introduction,
+            "jobID": jobs.id
         }
         print(job_dict)
         job_list["jobs"].append(job_dict)
