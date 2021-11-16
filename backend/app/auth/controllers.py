@@ -191,7 +191,7 @@ def change_password(token):
 
 @auth_service.route('/login', methods=['POST'])
 def login():
-    req = request.form
+    req = request.json
     email = req.get("email")
     pw = req.get("password")
     user = Authentication.query.filter_by(email=email).first()
