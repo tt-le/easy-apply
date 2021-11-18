@@ -118,6 +118,8 @@ def displayJob(userInput):
     return make_response(jsonify(job_list))
 
 @job_service.route('/getfile', methods=['PUT'])
+@login_required
+@require_role('employer')
 def getFile():
     req = request.json
     print(req)
