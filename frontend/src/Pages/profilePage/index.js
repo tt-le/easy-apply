@@ -2,14 +2,14 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@mui/material/Button';
 import "./profilePage.css"
-import image from "./im.jpg"
+import image from "./image.jpg"
 
 const profile = (props) => {
     return (<div id="root">
         <div id="profileHeader">
-            <div>
+            {/* <div>
                 <img src={image} width="200"></img>
-            </div>    
+            </div>     */}
             <div>
                 <Button>Edit</Button>
             </div>

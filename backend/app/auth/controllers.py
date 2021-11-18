@@ -92,9 +92,9 @@ def signup():
             filePathVid = None
             try:
                 if(request.files["video"].filename != ""):
-                    filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + email
+                    filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + str(current_user.get_id())
                     os.makedirs(filePathVid)
-                    filePathVid = filePathVid + "/" + request.files["video"].filename
+                    filePathVid = filePathVid + "/" + "pitch.mp4"
                     request.files["video"].save(filePathVid)
             except KeyError:
                 print("No Video Attached")
@@ -102,9 +102,9 @@ def signup():
             filePathPhoto = None
             try:
                 if(request.files["photo"].filename != ""):
-                    filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + email
+                    filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + str(current_user.get_id())
                     os.makedirs(filePathPhoto)
-                    filePathPhoto = filePathPhoto + "/" + request.files["photo"].filename
+                    filePathPhoto = filePathPhoto + "/resume" + request.files["photo"].filename.split(".")[1]
                     request.files["photo"].save(filePathPhoto)
             except KeyError:
                 print("No Photo Attached")
@@ -191,7 +191,7 @@ def change_password(token):
 
 @auth_service.route('/login', methods=['POST'])
 def login():
-    req = request.form
+    req = request.json
     email = req.get("email")
     pw = req.get("password")
     user = Authentication.query.filter_by(email=email).first()
