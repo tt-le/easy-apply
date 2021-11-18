@@ -1,0 +1,43 @@
+#root {
+    display: flex;
+    flex-direction: column;
+    background-color: #2b2b2b;
+}
+
+#h2 {
+    color: #00FECF;
+}
+
+#dashboard_body {
+    display: flex;
+    flex-direction: column;
+}
+
+#h3 {
+    color: #00FECF;
+}
+
+#table {
+    background-color: #2b2b2b;
+    border-collapse: collapse;
+}
+
+#th, td {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+    font-size: 32px;
+}
+
+#th {
+    background-color: rgb(117, 201, 250);
+  }
+  
+#td {
+    background-color: rgb(205, 235, 253);
+}
+
+#button {
+    background-color: #2b2b2b;
+    color: #00FECF;
+}

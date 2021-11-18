@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "position_name": "software developer",
+        "company": "apple"
+    },
+
+    {
+        "id": 2,
+        "position_name": "stack developer",
+        "company": "dell"
+    },
+
+    {
+        "id": 3,
+        "position_name": "web developer",
+        "company": "microsoft"
+    }
+]

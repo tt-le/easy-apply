@@ -2,6 +2,7 @@ import React from "react";
 import './App.css';
 import { Route, Switch } from "react-router-dom";
 
+
 import Dummy from './pages/Dummy'
 import JobBoard from './pages/JobBoard'
 import ApplyJob from "./pages/ApplyJob";
@@ -12,6 +13,7 @@ import Login from './pages/Login';
 import landingPage from "./pages/Landing";
 import profilePage from "./pages/profilePage";
 import ConfirmEmail from "./pages/ConfirmEmail";
+import dashboard from "./pages/Dashboard"
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/profile" exact component={profilePage}/>
         <Route path="/apply" component={ApplyJob}/>
         <Route path="/confirmEmail" component={ConfirmEmail}/>
+        <Route path="/dashboard" exact component={dashboard}/>
     </Switch>
   );
 }
