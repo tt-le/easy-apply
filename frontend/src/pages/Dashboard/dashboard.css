@@ -4,7 +4,7 @@
     background-color: #2b2b2b;
 }
 
-#h2 {
+#dashboardBanner {
     color: #00FECF;
 }
 
@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-#h3 {
+#dashboardStatus {
     color: #00FECF;
 }
 
