@@ -155,7 +155,7 @@ def verify_email():
         return make_response('Email wasn\'t sent', 500)
 
 
-@auth_service.route('/forgot_password')
+@auth_service.route('/forgot_password', methods=['POST'])
 def forgot_password():
     try:
         email = request.json.get('email')
@@ -164,14 +164,14 @@ def forgot_password():
 
     token = url_serializer.dumps(email, salt='forgot-password')
     msg = Message('Forgot password', sender='easyapplyc01@gmail.com', recipients=[email])
-    link = url_for('auth.change_password', token=token, _external=True)
+    link = f"http:localhost:3000/reset-password/{token}" #url_for('auth.change_password', token=token, _external=True)
     msg.body = 'Change password using this link {}'.format(link)
     mail.send(msg)
 
     return make_response('Email sent', 200)
     
 
-@auth_service.route('/change_password/<token>')
+@auth_service.route('/change_password/<token>', methods=['POST'])
 def change_password(token):
     try:
         req = request.json
@@ -186,7 +186,7 @@ def change_password(token):
         db.session.close()
     except SignatureExpired:
         return make_response('Signature expired', 401)
-    return make_response('Email confirmed', 200)
+    return make_response('Password changed', 200)
 
 
 @auth_service.route('/login', methods=['POST'])
@@ -196,7 +196,7 @@ def login():
     pw = req.get("password")
     user = Authentication.query.filter_by(email=email).first()
 
-    if user.email_confirmed_at == None:
+    if user and user.email_confirmed_at == None:
         return make_response("Email not verified", 403)
 
     if user and bcrypt.check_password_hash(user.password, pw):
