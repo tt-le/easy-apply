@@ -7,9 +7,9 @@ import image from "./image.jpg"
 const profile = (props) => {
     return (<div id="root">
         <div id="profileHeader">
-            <div>
+            {/* <div>
                 <img src={image} width="200"></img>
-            </div>    
+            </div>     */}
             <div>
                 <Button>Edit</Button>
             </div>

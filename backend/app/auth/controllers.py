@@ -92,9 +92,9 @@ def signup():
             filePathVid = None
             try:
                 if(request.files["video"].filename != ""):
-                    filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + email
+                    filePathVid = os.path.dirname(__file__)+ "../../../../pitch/" + str(current_user.get_id())
                     os.makedirs(filePathVid)
-                    filePathVid = filePathVid + "/" + request.files["video"].filename
+                    filePathVid = filePathVid + "/" + "pitch.mp4"
                     request.files["video"].save(filePathVid)
             except KeyError:
                 print("No Video Attached")
@@ -102,9 +102,9 @@ def signup():
             filePathPhoto = None
             try:
                 if(request.files["photo"].filename != ""):
-                    filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + email
+                    filePathPhoto = os.path.dirname(__file__)+ "../../../../profile/" + str(current_user.get_id())
                     os.makedirs(filePathPhoto)
-                    filePathPhoto = filePathPhoto + "/" + request.files["photo"].filename
+                    filePathPhoto = filePathPhoto + "/resume" + request.files["photo"].filename.split(".")[1]
                     request.files["photo"].save(filePathPhoto)
             except KeyError:
                 print("No Photo Attached")
@@ -247,3 +247,11 @@ def edit_profile():
         db.session.commit()
     db.session.close()
     return make_response("Successful edit", 201)
+
+@auth_service.route("/dashboard", methods=['GET'])
+def get_profile():
+    if current_user.has_role('applicant'):
+        data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
+    else:
+        data = Employer.query.filter_by(user_id=current_user.get_id()).first()
+    return make_response(jsonify(data), 201)
