@@ -13,6 +13,7 @@ from app import db, require_role
 
 # Import module models ()
 from app.job_service.models import AppliedJob, Jobs
+from app.auth.models import Applicant
 
 import os
 
@@ -149,3 +150,33 @@ def getFile():
             return send_file(filePath, mimetype="video/mp4")
     else:
         return "invalide file requested", 403
+
+
+@job_service.route('/job-applicants', methods=['GET'])
+@login_required
+@require_role('employer')
+def job_applicants():
+    user_id = current_user.get_id()
+    # user_id = 1
+    job_applicants = db.session.execute("""
+        SELECT appliedJob."jobID", jobs."jobName", jobs."employerID", applicant.user_id, applicant."firstName", 
+        applicant."lastName", applicant."profilePath", applicant."vidPath"
+        FROM appliedJob, jobs, applicant 
+        WHERE appliedJob."jobID" = Jobs.id AND appliedJob."userID" = applicant.user_id"""+
+        f" AND Jobs.\"employerID\" = {user_id} ORDER BY appliedJob.\"jobID\";")
+    resp = []
+    for applicant in job_applicants:
+        print(applicant.jobName)
+        resp.append(
+            {
+                "jobID": applicant.jobID,
+                "jobName": applicant.jobName,
+                "userID":applicant.user_id ,
+                "firstName":applicant.firstName ,
+                "lastName":applicant.lastName ,
+                "profilePath":applicant.profilePath ,
+                "vidPath":applicant.vidPath,
+            }
+        )
+    # print(resp)
+    return make_response(jsonify(resp))

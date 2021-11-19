@@ -39,7 +39,8 @@ class Jobs(Base):
 class AppliedJob(Base):
     __tablename__ = 'appliedjob'
     auth = db.relationship(Authentication)
-    jobID = db.Column(db.Integer,nullable=False)
+    jobs = db.relationship(Jobs)
+    jobID = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
     userID = db.Column(db.Integer, db.ForeignKey('auth.id'), nullable = False)
     
     # New instance instantiation procedure
