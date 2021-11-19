@@ -247,11 +247,3 @@ def edit_profile():
         db.session.commit()
     db.session.close()
     return make_response("Successful edit", 201)
-
-@auth_service.route("/dashboard", methods=['GET'])
-def get_profile():
-    if current_user.has_role('applicant'):
-        data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
-    else:
-        data = Employer.query.filter_by(user_id=current_user.get_id()).first()
-    return make_response(jsonify(data), 201)
