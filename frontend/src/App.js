@@ -8,6 +8,7 @@ import JobBoard from './pages/JobBoard'
 import ApplyJob from "./pages/ApplyJob";
 
 import SearchBar from './Components/SearchBar';
+
 import SignUp from './pages/Signup';
 import Login from './pages/Login';
 import landingPage from "./pages/Landing";
@@ -25,6 +26,7 @@ function App() {
         <Route path="/profile" exact component={profilePage}/>
         <Route path="/apply" component={ApplyJob}/>
         <Route path="/confirmEmail" component={ConfirmEmail}/>
+        <Route path="/reset-password" component={ResetPassword}/>
         <Route path="/dashboard" exact component={dashboard}/>
     </Switch>
   );
