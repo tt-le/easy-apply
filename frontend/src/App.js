@@ -27,7 +27,6 @@ function App() {
         <Route path="/profile" exact component={profilePage}/>
         <Route path="/apply" component={ApplyJob}/>
         <Route path="/confirmEmail" component={ConfirmEmail}/>
-        <Route path="/reset-password" component={ResetPassword}/>
         <Route path="/dashboard" exact component={dashboard}/>
         <Route path="/postJob" exact component={PostJob}/>
     </Switch>

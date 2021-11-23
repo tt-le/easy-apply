@@ -3,7 +3,7 @@ import { useState } from 'react'
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
-import "./postjob.css"
+//import "./postjob.css"
 import req from "../../api/index";
 
 function PostJob() {

@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom"
 
 const handleClick = () => {
     let path = "/postJob";
+    // eslint-disable-next-line no-restricted-globals
     history.push(path);
 }
 
