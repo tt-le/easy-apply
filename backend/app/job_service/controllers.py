@@ -94,7 +94,46 @@ def get():
         job_list["jobs"].append(job_dict)
     print(job_list)    
     return make_response(jsonify(job_list))
-        
+
+@job_service.route('/searchtop10/<jobID>', methods=['POST'])
+@login_required
+@require_role('employer')
+def searchtop10():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    i = 0
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+            applicant_dict = {
+                "userID": userID,
+            }
+            print(applicant_dict)
+            if(i < 10):
+                applicants_list["applicants"].append(applicant_dict)
+                i=i+1
+    return make_response(jsonify(applicants_list))
+
+@job_service.route('/searchwithpitch', methods =['POST'])
+@login_required
+@require_role('employer')
+def searchwithpitch():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+            applicant_dict = {
+                "userID": userID,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
