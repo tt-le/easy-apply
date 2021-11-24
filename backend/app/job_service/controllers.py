@@ -116,7 +116,7 @@ def searchApplicants():
 
 @job_service.route('/searchtop10', methods=['POST'])
 @login_required
-@require_role('employer')
+@require_role('applicant')
 def searchtop10():
     req = request.json
     jobID = req.get("jobID")
@@ -125,7 +125,7 @@ def searchtop10():
     i = 0
     for applicants in table:
         userID = applicants.userID
-        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+        if jobID == applicants.jobID and os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4"):
             applicant_dict = {
                 "userID": userID,
             }
@@ -133,6 +133,9 @@ def searchtop10():
             if(i < 10):
                 applicants_list["applicants"].append(applicant_dict)
                 i=i+1
+            else:
+                break
+            
     return make_response(jsonify(applicants_list))
 
 @job_service.route('/searchwithpitch', methods =['POST'])
@@ -145,11 +148,12 @@ def searchwithpitch():
     applicants_list = {'applicants':[]}
     for applicants in table:
         userID = applicants.userID
-        if jobID == applicants.jobID and os.path.exists("../../../../applications/{jobID}/{userID}/pitch.mp4"):
+        if jobID == applicants.jobID and (os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4") or os.path.exists(os.path.dirname(__file__)+ "../../../../pitch/" + str(userID) + "/pitch.mp4")):
             applicant_dict = {
                 "userID": userID,
+                "custom": os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4"),
+                "profile": os.path.exists(os.path.dirname(__file__)+ "../../../../pitch/" + str(userID) + "/pitch.mp4")
             }
-            print(applicant_dict)
             applicants_list["applicants"].append(applicant_dict)
     return make_response(jsonify(applicants_list))
 
