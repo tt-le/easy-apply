@@ -16,6 +16,7 @@ import profilePage from "./pages/profilePage";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (

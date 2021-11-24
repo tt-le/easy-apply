@@ -6,13 +6,15 @@ import data from "./mock_data.json"
 import "./dashboard.css";
 import {useHistory} from "react-router-dom"
 
-const handleClick = () => {
-    let path = "/postJob";
-    history.push(path);
-}
-
 function DashBoard(){
     const [tableInfo, setTableInfo] = useState(data);
+    const history = useHistory();
+
+    const handleClick = () => {
+        let path = "/postJob";
+        history.push(path);
+    }
+
     return (
         <div id="root">
             <div id="navBar">
