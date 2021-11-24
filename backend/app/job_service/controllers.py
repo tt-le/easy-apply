@@ -95,7 +95,26 @@ def get():
     print(job_list)    
     return make_response(jsonify(job_list))
 
-@job_service.route('/searchtop10/<jobID>', methods=['POST'])
+@job_service.route('/search', methods=['POST'])
+@login_required
+@require_role('employer')
+def searchApplicants():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    i = 0
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID:
+            applicant_dict = {
+                "userID": userID,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
+@job_service.route('/searchtop10', methods=['POST'])
 @login_required
 @require_role('employer')
 def searchtop10():
