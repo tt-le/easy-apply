@@ -15,6 +15,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import api from "../../api"; 
 import PopUp from "../PopUp"; 
 import { useTheme } from '@emotion/react';
+import { is } from 'date-fns/locale';
 
 const DataTable = () => {
     const [gridData, setGridData] = useState([]); 
@@ -30,6 +31,14 @@ const DataTable = () => {
 
     useEffect(() => {
         loadData();
+
+        api.get("/jobs/checkApplicant").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
     }, [])
 
     const loadData = async() => {

@@ -311,3 +311,46 @@ def job_applicants():
         )
     # print(resp)
     return make_response(jsonify(resp))
+
+@job_service.route('/checkEmployer', methods=['GET'])
+@login_required
+@require_role('employer')
+def check_emp():
+    return make_response("success", 200)
+
+@job_service.route('/checkApplicant', methods=['GET'])
+@login_required
+@require_role('applicant')
+def check_app():
+    return make_response("success", 200)
+
+@job_service.route('/checkLogin', methods=['GET'])
+@login_required
+def check_log():
+    return make_response("success", 200)
+
+@job_service.route('/getApplied', methods=['GET'])
+@login_required
+@require_role('applicant')
+def get_applied():
+    print(current_user.get_id())
+    table = db.session.execute(f"SELECT * FROM appliedJob WHERE \"userID\"={current_user.get_id()}")
+    job_list = {'jobs':[]}
+
+    for job in table:
+        table2 = db.session.execute(f"SELECT * FROM jobs WHERE \"id\"={job.jobID}")
+
+        for jobs in table2:
+            job_dict = {
+                "jobName": jobs.jobName,
+                "employerID": jobs.employerID,
+                "companyName": jobs.companyName,
+                "email": jobs.email,
+                "industry": jobs.industry,
+                "location": jobs.location,
+                "introduction": jobs.introduction
+            }
+        
+        job_list["jobs"].append(job_dict)
+    
+    return make_response(jsonify(job_list))

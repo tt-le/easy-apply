@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import api from "../../api"; 
 import "./Jobhistory.css"
 import ViewButton from '../../Components/ViewButton';
+import { useHistory } from 'react-router';
 
 // For applicants, display job history(like a job board without apply button).
 const ApplicantTable = () => {
@@ -14,21 +15,12 @@ const ApplicantTable = () => {
     let[filteredData] = useState(); 
 
     useEffect(() => {
-        loadData();
+        api.get("/jobs/getApplied").then((resp) => {
+            setGridData(resp["data"]["jobs"])
+        })
     }, [])
 
-    const loadData = async() => {
-        setLoading(true); 
-        const response = await api.get("/jobs/get");
-        const myData2 = response['data']['jobs'];
-        setGridData(myData2); 
-        setLoading(false); 
-    }
-
-    const columns = [{ 
-        title: "ID",
-        dataIndex: "jobID",
-    }, 
+    const columns = [ 
     {
         title: "Job Name", 
         dataIndex: "jobName", 
@@ -49,16 +41,6 @@ const ApplicantTable = () => {
         align: "center",
     },   
 ]; 
-
-const mock_applied = [
-    {
-        jobID: 203,
-        jobName: "frontend developer",
-        companyName: "Meta",
-        location: "California",
-        introduction:"Meta offers other products and services, including Facebook, Messenger, Facebook Watch, and Facebook Portal."
-    }
-]
  
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#FFFFFF', height: "100vh" }}>
@@ -76,7 +58,7 @@ const mock_applied = [
 
                 }}
                 // dataSource={filteredData && filteredData.length ? filteredData : gridData}
-                dataSource = {mock_applied}
+                dataSource = {gridData}
                 bordered
                 loading={loading}
                 pagination
@@ -171,8 +153,30 @@ const EmployerTable = () => {
 
 //TODO: need a way to check if user is applicant or employer(by using auth or sth?) and store it in state
 function HistoryControl(props) {
-    const isEmployer = true;
+    const [isEmployer, setIsEmployer] = useState(false);
     let table;
+    const history = useHistory();
+    useEffect(() => {
+        api.get("/jobs/checkLogin").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
+
+        api.get("/jobs/checkEmployer").then((resp) => {
+            if(resp.status == 200) {
+                setIsEmployer(true)
+            }
+        })
+
+        api.get("/jobs/checkApplicant").then((resp) => {
+            if(resp.status == 200) {
+                setIsEmployer(false)
+            }
+        })
+    }, []);
 
     if (isEmployer) {
         table = <EmployerTable/>
