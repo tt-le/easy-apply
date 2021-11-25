@@ -17,6 +17,7 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
 import HistoryControl from "./pages/JobHistory";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dashboard" exact component={dashboard}/>
         <Route path="/postJob" exact component={PostJob}/>
         <Route path="/jobHistory" exact component={HistoryControl}/>
+        <Route path="/resetPassword" exact component={ResetPassword}/>
     </Switch>
   );
 }
