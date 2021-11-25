@@ -94,7 +94,137 @@ def get():
         job_list["jobs"].append(job_dict)
     print(job_list)    
     return make_response(jsonify(job_list))
+
+@job_service.route('/getJobs', methods=['GET'])
+@login_required
+@require_role('employer')
+def getJobsWithId():
+    userId = current_user.get_id()
+    table = db.session.execute(f"SELECT * FROM jobs WHERE \"employerID\"={userId}")
+    job_list = {'jobs':[]}
+    for jobs in table:
+
+        applied = db.session.execute(f"SELECT * FROM appliedJob WHERE \"jobID\"={jobs.id}")
+        apps = []
+
+        for application in applied:
+            app_user =  db.session.execute(f"SELECT \"firstName\", \"lastName\" FROM applicant WHERE \"user_id\"={application.userID}")
+
+            for user in app_user:
+                app_dict = {
+                    "userId": application.userID,
+                    "Name": user.firstName + " " + user.lastName,
+                    "custom": os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobs.id) + "/" + str(application.userID) + "/pitch.mp4"),
+                    "profile": os.path.exists(os.path.dirname(__file__)+ "../../../../pitch/" + str(application.userID) + "/pitch.mp4")
+                }
+
+            apps.append(app_dict)
         
+        applicants_list = []
+        i = 0
+        applied = db.session.execute(f"SELECT * FROM appliedJob WHERE \"jobID\"={jobs.id}")
+        for applicants in applied:
+            userID = applicants.userID
+
+            if os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobs.id) + "/" + str(userID) + "/pitch.mp4"):
+                app_user =  db.session.execute(f"SELECT \"firstName\", \"lastName\" FROM applicant WHERE \"user_id\"={userID}")
+
+                for user in app_user:
+                    applicant_dict = {
+                        "userID": userID,
+                        "Name": user.firstName + " " + user.lastName
+                    }
+
+                if(i < 10):
+                    applicants_list.append(applicant_dict)
+                    i=i+1
+                else:
+                    break
+
+        job_dict = {
+            "jobName": jobs.jobName,
+            "employerID": jobs.employerID,
+            "companyName": jobs.companyName,
+            "email": jobs.email,
+            "industry": jobs.industry,
+            "location": jobs.location,
+            "introduction": jobs.introduction,
+            "jobID": jobs.id,
+            "applicants": apps,
+            "topApplicants": applicants_list
+        }
+        print(job_dict)
+        job_list["jobs"].append(job_dict)
+    print(job_list)    
+    return make_response(jsonify(job_list))
+
+@job_service.route('/search', methods=['POST'])
+@login_required
+@require_role('employer')
+def searchApplicants():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    i = 0
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID:
+            applicant_dict = {
+                "userID": userID,
+            }
+            print(applicant_dict)
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
+@job_service.route('/searchtop10', methods=['POST'])
+@login_required
+@require_role('employer')
+def searchtop10():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute(f"SELECT * FROM appliedjob WHERE \"jobID\"={jobID}")
+    applicants_list = {'topApplicants':[]}
+    i = 0
+    for applicants in table:
+        userID = applicants.userID
+        if os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4"):
+            app_user =  db.session.execute(f"SELECT \"firstName\", \"lastName\" FROM applicant WHERE \"user_id\"={userID}")
+
+            for user in app_user:
+                applicant_dict = {
+                    "userID": userID,
+                    "Name": user.firstName + " " + user.lastName
+                }
+
+            print(applicant_dict)
+            if(i < 10):
+                applicants_list["topApplicants"].append(applicant_dict)
+                i=i+1
+            else:
+                break
+            
+    return make_response(jsonify(applicants_list))
+
+@job_service.route('/searchwithpitch', methods =['POST'])
+@login_required
+@require_role('employer')
+def searchwithpitch():
+    req = request.json
+    jobID = req.get("jobID")
+    table = db.session.execute("SELECT * FROM appliedjob")
+    applicants_list = {'applicants':[]}
+    for applicants in table:
+        userID = applicants.userID
+        if jobID == applicants.jobID and (os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4") or os.path.exists(os.path.dirname(__file__)+ "../../../../pitch/" + str(userID) + "/pitch.mp4")):
+            applicant_dict = {
+                "userID": userID,
+                "custom": os.path.exists(os.path.dirname(__file__)+ "../../../../applications/" + str(jobID) + "/" + str(userID) + "/pitch.mp4"),
+                "profile": os.path.exists(os.path.dirname(__file__)+ "../../../../pitch/" + str(userID) + "/pitch.mp4")
+            }
+            applicants_list["applicants"].append(applicant_dict)
+    return make_response(jsonify(applicants_list))
+
 @job_service.route('/search/<userInput>', methods=['GET'])
 def displayJob(userInput):
     #if any stuff contains search input, then 1 else 0 for score. Then display all jobs with score of 1 
@@ -132,6 +262,7 @@ def getFile():
 
     if(text == "resume"):
         filePath = os.path.dirname(__file__)+ "../../../../applications/" + str(jobId) + "/" + str(userId) + "/resume.pdf"
+        print(filePath)
         if not os.path.exists(filePath):
             return "Resume doesn't exist", 403
         else:
@@ -180,3 +311,46 @@ def job_applicants():
         )
     # print(resp)
     return make_response(jsonify(resp))
+
+@job_service.route('/checkEmployer', methods=['GET'])
+@login_required
+@require_role('employer')
+def check_emp():
+    return make_response("success", 200)
+
+@job_service.route('/checkApplicant', methods=['GET'])
+@login_required
+@require_role('applicant')
+def check_app():
+    return make_response("success", 200)
+
+@job_service.route('/checkLogin', methods=['GET'])
+@login_required
+def check_log():
+    return make_response("success", 200)
+
+@job_service.route('/getApplied', methods=['GET'])
+@login_required
+@require_role('applicant')
+def get_applied():
+    print(current_user.get_id())
+    table = db.session.execute(f"SELECT * FROM appliedJob WHERE \"userID\"={current_user.get_id()}")
+    job_list = {'jobs':[]}
+
+    for job in table:
+        table2 = db.session.execute(f"SELECT * FROM jobs WHERE \"id\"={job.jobID}")
+
+        for jobs in table2:
+            job_dict = {
+                "jobName": jobs.jobName,
+                "employerID": jobs.employerID,
+                "companyName": jobs.companyName,
+                "email": jobs.email,
+                "industry": jobs.industry,
+                "location": jobs.location,
+                "introduction": jobs.introduction
+            }
+        
+        job_list["jobs"].append(job_dict)
+    
+    return make_response(jsonify(job_list))

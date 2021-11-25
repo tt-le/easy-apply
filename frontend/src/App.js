@@ -16,6 +16,7 @@ import profilePage from "./pages/profilePage";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
+import HistoryControl from "./pages/JobHistory";
 import ResetPassword from "./pages/ResetPassword";
 
 function App() {
@@ -28,9 +29,10 @@ function App() {
         <Route path="/profile" exact component={profilePage}/>
         <Route path="/apply" component={ApplyJob}/>
         <Route path="/confirmEmail" component={ConfirmEmail}/>
-        <Route path="/reset-password" component={ResetPassword}/>
         <Route path="/dashboard" exact component={dashboard}/>
         <Route path="/postJob" exact component={PostJob}/>
+        <Route path="/jobHistory" exact component={HistoryControl}/>
+        <Route path="/resetPassword" exact component={ResetPassword}/>
     </Switch>
   );
 }

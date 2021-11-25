@@ -13,3 +13,6 @@ backend/bin/pip
 backend/bin/pip3
 backend/bin/pip3.8
 backend/pyvenv.cfg
+applications/
+pitch/
+profile/

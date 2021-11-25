@@ -24,7 +24,7 @@ export default function NavBar() {
           <Button color="inherit"  href="/profile" style={{ color: "#00FECF" }}>
             Profile<AccountCircleIcon></AccountCircleIcon>
           </Button>
-          <Button color="inherit" style={{ color: "#00FECF" }}>
+          <Button color="inherit" href="/jobHistory" style={{ color: "#00FECF" }}>
             History<HistoryIcon></HistoryIcon>
           </Button>
           <Button color="inherit" style={{ color: "#00FECF" }}>

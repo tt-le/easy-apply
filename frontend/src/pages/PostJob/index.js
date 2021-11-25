@@ -1,9 +1,10 @@
 import * as React from "react";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Container } from "@mui/material";
 import req from "../../api/index";
+import { useHistory } from "react-router";
 
 function PostJob() {
 
@@ -13,6 +14,17 @@ function PostJob() {
     const [Industry, setIndustry] = useState('');
     const [Location, setLocation] = useState('');
     const [Description, setDescription] = useState('');
+    const history = useHistory();
+
+    useEffect(() => {
+        req.get("/jobs/checkEmployer").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
+    }, []);
 
     const handleTitleChange = event => {
         setTitle(event.target.value);

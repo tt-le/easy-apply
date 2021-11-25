@@ -11,6 +11,16 @@ const ApplyJob = () => {
     const [selectedPitch, setSelectedPitch] = useState(""); //Contains information about currently uploaded file
     let history = useHistory();
     let route = useLocation();
+    
+    useEffect(() => {
+      req.get("/jobs/checkApplicant").then((resp) => {
+        if(resp.status != 200) {
+            history.push("/login")
+        }
+      }).catch((err) => {
+          history.push("/login")
+      });
+    }, [])
 
     const initialValuesApplicant = {};
 

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NavBar from "../../Components/NavBar"
 import api from "../../api";
 import Button from '@mui/material/Button';
@@ -15,6 +15,25 @@ function DashBoard(){
         history.push(path);
     }
 
+    const applicantCheck = () => {
+        let path = "/jobHistory";
+        history.push(path);
+    }
+
+    useEffect(() => {
+        api.get("/jobs/checkEmployer").then((resp) => {
+            if(resp.status != 200) {
+                history.push("/login")
+            }
+        }).catch((err) => {
+            history.push("/login")
+        });
+
+        api.get("/jobs/getJobs").then((resp) => {
+            setTableInfo(resp["data"]["jobs"])
+        });
+    }, []);
+
     return (
         <div id="root">
             <div id="navBar">
@@ -28,7 +47,6 @@ function DashBoard(){
                 <table id = "table">
                     <thead>
                         <tr>
-                            <th>id</th>
                             <th>position name</th>
                             <th>company</th>
                             <th>status</th>
@@ -37,10 +55,9 @@ function DashBoard(){
                     <tbody>
                     {tableInfo.map((data) => (
                         <tr>
-                        <td>{data.id}</td>
-                        <td>{data.position_name}</td>
-                        <td>{data.company}</td>
-                        <td><Button id = "button">view status</Button></td>
+                        <td>{data.jobName}</td>
+                        <td>{data.companyName}</td>
+                        <td><Button id = "button" onClick={applicantCheck}>view status</Button></td>
                         </tr>
                     ))}                   
                     </tbody>

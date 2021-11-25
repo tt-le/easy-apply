@@ -201,7 +201,14 @@ def login():
 
     if user and bcrypt.check_password_hash(user.password, pw):
         login_user(user, remember=True)
-        return make_response("Successfully logged in", 201)
+        temp = Applicant.query.filter_by(user_id=current_user.get_id()).first()
+
+        if(temp):
+            code = 201
+        else:
+            code = 200
+        
+        return make_response("Successfully logged in", code)
     else:
         return make_response("Incorrect password/email combination", 401)
 

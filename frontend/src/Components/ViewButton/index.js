@@ -29,14 +29,20 @@ function ViewButton(props) {
         })
     }
 
+    if(!props.subtext) {
+        var subtext = " "
+    } else {
+        var subtext = props.subtext + " "        
+    }
+
     return (
         <Button
             variant="contained"
             color="primary"
-            fullWidth
+
             onClick={() => getFiles()}
             >
-            {"View " + props.text}
+            {"View " + subtext + props.text}
         </Button>
     )
 }

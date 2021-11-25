@@ -15,6 +15,8 @@ function sendLogin(history) {
   req.post("auth/login", {email: email, password: password}).then((resp) => {
     if(resp.status == 201) {
       history.push("/JobBoard");
+    } else if (resp.status == 200) {
+      history.push("/dashboard");
     }
   }).catch(error => {
     if(error.response.status === 401) {
