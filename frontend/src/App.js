@@ -16,6 +16,7 @@ import profilePage from "./pages/profilePage";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import dashboard from "./pages/Dashboard"
 import PostJob from "./pages/PostJob"
+import HistoryControl from "./pages/JobHistory";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/confirmEmail" component={ConfirmEmail}/>
         <Route path="/dashboard" exact component={dashboard}/>
         <Route path="/postJob" exact component={PostJob}/>
+        <Route path="/jobHistory" exact component={HistoryControl}/>
     </Switch>
   );
 }
