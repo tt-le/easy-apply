@@ -5,6 +5,7 @@ import {isEmpty} from "lodash";
 import { useHistory } from "react-router-dom";
 import NavBar from "../NavBar"; 
 import Paper from '@mui/material/Paper';
+import 'antd/dist/antd.css';
 
 
 import { render } from 'react-dom';
@@ -48,11 +49,6 @@ const DataTable = () => {
         setGridData(myData2); 
         setLoading(false); 
     }
-
-    const handleApply = () => {
-
-
-    }; 
  
    // console.log("gridData", gridData); 
 
@@ -129,33 +125,29 @@ const clearAll = () =>{
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#2b2b2b', height: "100vh" }}>
         <NavBar/>
-            <Space style={{marginBottom: 16}}>
-            <Input 
-                placeholder="Search for Jobs"
-                onChange={handleSearch}
-                type="text"
-                allowClear
-                value= {searchText}
-            />
-                <Button type="primary" onClick={globalSearch}>Search</Button>
-                <Button onClick={clearAll}>Clear All</Button>            
-            </Space>
-            <Form form={form}>
-                <Table 
-                columns={columns}
-                expandable = {{
-                    expandedRowRender: (record) => (
-                        <p style={{margin: 0}}>{record.introduction}</p>
-                    ),
-                    rowExpandable: (record) => record.introduction !== "Not Expandable",
 
-                }}
-                dataSource={filteredData && filteredData.length ? filteredData : gridData}
-                bordered
-                loading={loading}
-                pagination
-                />
-            </Form>
+        <Space style={{marginBottom: 16}}>
+        <Input
+            placeholder="Search for Jobs"
+            onChange={handleSearch}
+            type="text"
+            allowClear
+            value= {searchText}
+        />
+            <Button type="primary" onClick={globalSearch}>Search</Button>
+            <Button onClick={clearAll}>Clear All</Button>       
+
+        </Space>
+            <Table
+            columns={columns}
+            expandable = {{
+                expandedRowRender: record => 
+                    <p style={{margin: 0}}>{record.introduction}</p>,
+                rowExpandable: record => record.introduction !== "Not Expandable",
+            }}
+            dataSource={filteredData && filteredData.length ? filteredData : gridData}
+            />
+            
         </Paper>
 
     ); 

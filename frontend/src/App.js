@@ -3,21 +3,21 @@ import './App.css';
 import { Route, Switch } from "react-router-dom";
 
 
-import Dummy from './pages/Dummy'
-import JobBoard from './pages/JobBoard'
-import ApplyJob from "./pages/ApplyJob";
+import Dummy from './Pages/Dummy'
+import JobBoard from './Pages/JobBoard'
+import ApplyJob from "./Pages/ApplyJob";
 
 import SearchBar from './Components/SearchBar';
 
-import SignUp from './pages/Signup';
-import Login from './pages/Login';
-import landingPage from "./pages/Landing";
-import profilePage from "./pages/profilePage";
-import ConfirmEmail from "./pages/ConfirmEmail";
-import dashboard from "./pages/Dashboard"
-import PostJob from "./pages/PostJob"
-import HistoryControl from "./pages/JobHistory";
-import ResetPassword from "./pages/ResetPassword";
+import SignUp from './Pages/Signup';
+import Login from './Pages/Login';
+import landingPage from "./Pages/Landing";
+import profilePage from "./Pages/profilePage";
+import ConfirmEmail from "./Pages/ConfirmEmail";
+import dashboard from "./Pages/Dashboard"
+import PostJob from "./Pages/PostJob"
+import HistoryControl from "./Pages/JobHistory";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (

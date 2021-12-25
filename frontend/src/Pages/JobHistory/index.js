@@ -6,6 +6,7 @@ import api from "../../api";
 import "./Jobhistory.css"
 import ViewButton from '../../Components/ViewButton';
 import { useHistory } from 'react-router';
+import NavBar from '../../Components/NavBar';
 
 // For applicants, display job history(like a job board without apply button).
 const ApplicantTable = () => {
@@ -44,26 +45,17 @@ const ApplicantTable = () => {
  
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#FFFFFF', height: "100vh" }}>
+            <NavBar/>
             <h1>History of applied jobs</h1>
-            <Form form={form}>
-                <Table 
+                        <Table 
                 columns={columns}
-                expandable = {{
-                    expandedRowRender: (record) => (
-                        <p style={{margin: 0}}>
-                            {record.introduction}
-                        </p>
-                    ),
-                    rowExpandable: (record) => record.introduction !== "Not Expandable",
-
-                }}
+   
                 // dataSource={filteredData && filteredData.length ? filteredData : gridData}
                 dataSource = {gridData}
                 bordered
                 loading={loading}
                 pagination
                 />
-            </Form>
         </Paper>
 
     ); 
@@ -105,6 +97,7 @@ const EmployerTable = () => {
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#2b2b2b', height: "100vh" }}>
             <h1 className="header">History of posted jobs</h1>
+            <NavBar/>
             <Table
             className="Table"
             columns={columns}

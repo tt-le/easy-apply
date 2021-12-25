@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Button} from "@material-ui/core";
+import './index.css';
+import 'antd/dist/antd.css';
 
 const FileUploader = props => {
   const hiddenFileInput = React.useRef(null);

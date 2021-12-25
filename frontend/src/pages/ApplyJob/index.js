@@ -5,6 +5,14 @@ import { useLocation, useHistory } from "react-router-dom";
 import { Button, MenuItem, Grid} from "@material-ui/core";
 import FileUploader from "../../Components/FileUpload";
 import req from "../../api/index"
+
+import NavBar from '../../Components/NavBar';
+import Paper from '@mui/material/Paper';
+import 'antd/dist/antd.css';
+import {notification } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+import { Component } from 'react'
+import { Typography } from '@material-ui/core';
  
 const ApplyJob = () => {
     const [selectedFile, setSelectedFile] = useState(""); //Contains information about currently uploaded file
@@ -52,8 +60,21 @@ const ApplyJob = () => {
 	// 	setSelectedFile(event.target.files[0]); //Sets selected file to the file uploaded using button below
 	// };
 
+  const openNotification = () => {
+    notification.open({
+      message: 'Application Submitted',
+      description:
+        'Your application has been successfully submitted',
+      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+    });
+  };
 
   return (
+    <Paper sx={{ width: '100%', overflow: 'hidden',backgroundColor: '#2b2b2b', height: "100vh" }}>
+    <NavBar/>
+    <Typography style={{ flex: 1, alignItems: 'center',justifyContent: 'center' }}>
+   <h1 style={{ color: 'white'}}> You can upload your resume and tailored elevator pitch here </h1>
+   </Typography>
 
     <Formik initialValues={initialValuesApplicant} onSubmit={( nextValues ) => { apply(selectedFile, selectedPitch, history) }}>
     {({ submitForm, isSubmitting, touched, errors }) => (
@@ -76,6 +97,8 @@ const ApplyJob = () => {
                     variant="contained"
                     color="primary"
                     onClick={submitForm}
+                    onClick={openNotification}
+
                     size="small"
                     fullWidth
                 >
@@ -89,6 +112,7 @@ const ApplyJob = () => {
         </Form> 
     )}
     </Formik>
+    </Paper>
 
 
   );
