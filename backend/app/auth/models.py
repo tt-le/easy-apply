@@ -3,7 +3,7 @@
 from app import db
 from flask_login import UserMixin
 
-
+from dataclasses import dataclass 
 
 # Define a base model for other database tables to inherit
 class Base(db.Model):
@@ -64,7 +64,18 @@ class UserRoles(Base):
     def __repr__(self):
         return '<Role user:{}, role:{}, status:{}>'.format(self.user_id, self.role_id, self.status)     
 
+@dataclass
 class Applicant(Base):
+
+    user_id : int
+    firstName : str
+    lastName : str
+    address : str
+    city : str
+    country : str
+    gender : str
+    birthDate : str
+
     __tablename__ = 'applicant'
     auth = db.relationship(Authentication)
     user_id = db.Column(db.Integer, db.ForeignKey('auth.id', ondelete='CASCADE'), primary_key=True)
@@ -94,8 +105,17 @@ class Applicant(Base):
         return '<Applicant {} {}>'.format(self.firstName, self.lastName)
     
 
-
+@dataclass
 class Employer(Base):
+
+    user_id: int
+    firstName: str
+    lastName: str
+    address: str
+    city: str
+    country: str
+    company_name: str
+
     __tablename__ = 'employer'
     auth = db.relationship(Authentication)
     user_id = db.Column(db.Integer, db.ForeignKey('auth.id', ondelete='CASCADE'),primary_key=True)

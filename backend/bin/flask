@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/parth/Desktop/Year 3 Sem 2/C01/projectf21-team-anything-works/backend/bin/python3" "$0" "$@"
-' '''
+#!/Users/vanshikav/Documents/GitHub/easy-apply/backend/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

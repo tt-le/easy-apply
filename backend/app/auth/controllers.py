@@ -226,6 +226,7 @@ def get_profile():
         data = Applicant.query.filter_by(user_id=current_user.get_id()).first()
     else:
         data = Employer.query.filter_by(user_id=current_user.get_id()).first()
+    print (data)
     return make_response(jsonify(data), 201)
 
 @auth_service.route("/profile", methods=['PUT'])
